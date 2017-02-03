@@ -21,6 +21,9 @@ abstract class BaseAndroidActivity extends AppCompatActivity {
     protected static final int MENU_ITEM_ADD_COURSE = 0x2000;
     protected static final int MENU_ITEM_ADD_TERM = 0x3000;
 
+    protected static final int MENU_ITEM_SAVE_COURSE = 0x2010;
+    protected static final int MENU_ITEM_SAVE_TERM = 0x3010;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
