@@ -16,4 +16,5 @@ Proin tincidunt vitae neque a semper. Pellentesque fermentum metus euismod sodal
     <string name="title_activity_terms_landing">Terms</string>
     <string name="title_activity_course_detail">Course Details</string>
     <string name="save">Save</string>
+    <string name="title_activity_term_detail">Term Details</string>
 </resources>

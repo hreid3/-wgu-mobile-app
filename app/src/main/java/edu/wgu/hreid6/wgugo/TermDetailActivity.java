@@ -11,17 +11,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class TermsLandingActivity  extends BaseAndroidActivity {
+public class TermDetailActivity extends BaseAndroidActivity {
 
     private ViewGroup viewGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_terms_landing);
-        this.viewGroup = (ViewGroup) findViewById(R.id.layout_terms_landing);
+        setContentView(R.layout.activity_term_detail);
+        this.viewGroup = (ViewGroup) findViewById(R.id.layout_term_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -29,8 +30,8 @@ public class TermsLandingActivity  extends BaseAndroidActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this addsc items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        menu.add(0, MENU_ITEM_ADD_TERM, 100, getString(R.string.Add));
-        menu.findItem(MENU_ITEM_ADD_TERM).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        menu.add(0, MENU_ITEM_SAVE_TERM, 100, R.string.save);
+        menu.findItem(MENU_ITEM_SAVE_TERM).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -41,17 +42,17 @@ public class TermsLandingActivity  extends BaseAndroidActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch (id) {
-            case MENU_ITEM_ADD_TERM:
-                startActivity(new Intent(this, TermDetailActivity.class));
+            case MENU_ITEM_SAVE_TERM:
+                Snackbar.make(getViewGroup(), "Saving...", Snackbar.LENGTH_LONG).setAction("Action", null).show(); // Progress
+                startActivity(new Intent(this, TermsLandingActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-
     @Override
     protected ViewGroup getViewGroup() {
         return this.viewGroup;
     }
-
 }

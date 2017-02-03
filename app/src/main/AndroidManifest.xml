@@ -54,6 +54,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.wgu.hreid6.wgugo.CoursesLandingActivity" />
         </activity>
+        <activity
+            android:name=".TermDetailActivity"
+            android:label="@string/title_activity_term_detail"
+            android:parentActivityName=".TermsLandingActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.wgu.hreid6.wgugo.TermsLandingActivity" />
+        </activity>
     </application>
 
 </manifest>
