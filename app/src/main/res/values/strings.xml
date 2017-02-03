@@ -11,4 +11,7 @@ Duis sit amet nibh non mi auctor faucibus. In eu elit lacus. Donec facilisis nec
 Proin tincidunt vitae neque a semper. Pellentesque fermentum metus euismod sodales cursus. Phasellus ac ligula id lectus facilisis ullamcorper. Nunc tellus neque, vehicula sit amet ornare non, cursus at nulla. Cras hendrerit, sapien a hendrerit posuere, urna urna porta magna, non pharetra urna ligula a orci. Nunc imperdiet, purus nec eleifend feugiat, orci dolor mollis risus, in aliquam sem nibh tincidunt lectus. Fusce convallis aliquam lorem semper mattis.</string>
     <string name="menu_item_courses_landing">Courses</string>
     <string name="menu_item_terms_landing">Terms</string>
+    <string name="title_activity_courses_landing">Courses</string>
+    <string name="Add">ADD +</string>
+    <string name="title_activity_terms_landing">Terms</string>
 </resources>

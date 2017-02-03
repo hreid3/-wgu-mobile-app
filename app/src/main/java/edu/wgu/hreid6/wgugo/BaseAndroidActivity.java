@@ -16,6 +16,10 @@ import android.view.ViewGroup;
 abstract class BaseAndroidActivity extends AppCompatActivity {
     protected static final int MENU_ITEM_ABOUT = 0x1001;
     protected static final int MENU_ITEM_LOGOUT = 0x1002;
+    protected static final int MENU_ITEM_COURSES_LIST = 0x1100;
+    protected static final int MENU_ITEM_TERMS_LIST = 0x1200;
+    protected static final int MENU_ITEM_ADD_COURSE = 0x2000;
+    protected static final int MENU_ITEM_ADD_TERM = 0x3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

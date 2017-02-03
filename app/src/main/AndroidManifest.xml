@@ -27,6 +27,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.wgu.hreid6.wgugo.MainActivity" />
         </activity>
+        <activity
+            android:name=".CoursesLandingActivity"
+            android:label="@string/title_activity_courses_landing"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.wgu.hreid6.wgugo.MainActivity" />
+        </activity>
+        <activity
+            android:name=".TermsLandingActivity"
+            android:label="@string/title_activity_terms_landing"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.wgu.hreid6.wgugo.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

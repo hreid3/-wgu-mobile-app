@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 
 public class MainActivity extends BaseAndroidActivity {
 
-    private static final int MENU_ITEM_COURSES_LIST = 0x1100;
-    private static final int MENU_ITEM_TERMS_LIST = 0x1200;
     private CoordinatorLayout mainLayout;
 
     @Override
@@ -45,8 +43,11 @@ public class MainActivity extends BaseAndroidActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch (id) {
-            case MENU_ITEM_ABOUT:
-                startActivity(new Intent(this, AboutActivity.class));
+            case MENU_ITEM_COURSES_LIST:
+                startActivity(new Intent(this, CoursesLandingActivity.class));
+                return true;
+            case MENU_ITEM_TERMS_LIST:
+                startActivity(new Intent(this, TermsLandingActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
