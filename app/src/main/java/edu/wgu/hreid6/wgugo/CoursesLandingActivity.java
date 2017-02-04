@@ -11,9 +11,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import edu.wgu.hreid6.wgugo.data.model.Course;
+import edu.wgu.hreid6.wgugo.data.model.Term;
+
 public class CoursesLandingActivity extends BaseAndroidActivity {
 
     private ViewGroup viewGroup;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +30,12 @@ public class CoursesLandingActivity extends BaseAndroidActivity {
         setContentView(R.layout.activity_courses_landing);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        try {
+            List<Course>  courses = courseDao.getAllCourses();
+            int i =1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

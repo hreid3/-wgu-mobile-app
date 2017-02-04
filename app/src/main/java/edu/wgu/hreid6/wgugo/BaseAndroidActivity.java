@@ -4,10 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+
+import javax.inject.Inject;
+
+import edu.wgu.hreid6.wgugo.data.dao.CourseDao;
+import edu.wgu.hreid6.wgugo.data.dao.TermDao;
 
 /**
  * Created by hreid on 2/3/17.
@@ -24,6 +28,13 @@ abstract class BaseAndroidActivity extends AppCompatActivity {
     protected static final int MENU_ITEM_SAVE_COURSE = 0x2010;
     protected static final int MENU_ITEM_SAVE_TERM = 0x3010;
 
+    static CourseDao courseDao; // I do not like this
+
+    static TermDao termDao; // I do not like this
+
+    public BaseAndroidActivity() {
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +46,12 @@ abstract class BaseAndroidActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         menu.add(0, MENU_ITEM_ABOUT, 300, R.string.title_activity_about);
         menu.add(0, MENU_ITEM_LOGOUT, 400, R.string.logout);
+        if (courseDao == null) {
+            courseDao = new CourseDao(this);
+        }
+        if (termDao == null){
+            termDao = new TermDao(this);
+        }
         return true;
     }
 
