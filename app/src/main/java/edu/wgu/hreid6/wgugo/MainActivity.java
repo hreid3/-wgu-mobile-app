@@ -6,10 +6,15 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import static android.util.Log.*;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.view.ViewGroup;
+
+import java.sql.SQLException;
+
+import edu.wgu.hreid6.wgugo.data.model.Graduate;
 
 public class MainActivity extends BaseAndroidActivity {
 
@@ -23,6 +28,21 @@ public class MainActivity extends BaseAndroidActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        // We need to Get Graduate information, if not available, we need to popup activity to get information
+
+        try {
+            Graduate graduate = getGraduate();
+            if (graduate == null) {
+                // Popup activity to fetch graduate info
+            } else {
+                // put in summary details.
+            }
+        } catch (SQLException e) {
+            e(getClass().getName(), "Error fetching graduate", e);
+            // TODO: popup error message.
+        }
+
     }
 
     @Override

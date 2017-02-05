@@ -33,4 +33,7 @@ abstract class AbstractDao<T> {
         return helper.getDao(t);
     }
 
+    public void releaseResources() {
+        OpenHelperManager.releaseHelper();
+    }
 }

@@ -17,7 +17,7 @@ public class Graduate {
         ACTIVE, PENDING, UNDERGRAD, GRAD, ALUMNUS
     }
 
-    @DatabaseField(generatedId = true)
+    @DatabaseField(id = true)
     private Integer id;
 
     @DatabaseField

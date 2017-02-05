@@ -2,22 +2,16 @@ package edu.wgu.hreid6.wgugo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import static android.util.Log.*;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import edu.wgu.hreid6.wgugo.data.model.Course;
-import edu.wgu.hreid6.wgugo.data.model.Term;
 
 public class CoursesLandingActivity extends BaseAndroidActivity {
 
@@ -32,9 +26,8 @@ public class CoursesLandingActivity extends BaseAndroidActivity {
         setSupportActionBar(toolbar);
         try {
             List<Course>  courses = courseDao.getAllCourses();
-            int i =1;
         } catch (SQLException e) {
-            e.printStackTrace();
+            e(getClass().getName(), "Error fetching courses", e);
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

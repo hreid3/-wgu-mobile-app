@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_graduate_form"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="edu.wgu.hreid6.wgugo.GraduateFormActivity"
+    tools:showIn="@layout/activity_graduate_form">
+
+    <TextView
+        android:id="@+id/profile_header"
+        style="@style/pageHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:text="Graduate Profile" />
+
+    <LinearLayout
+        android:id="@+id/fld_group_first_name"
+        style="@style/fldGroup"
+        android:layout_below="@+id/profile_header">
+
+        <TextView
+            android:id="@+id/lbl_first_name"
+            style="@style/wguFormLabel"
+            android:text="@string/first_name" />
+
+        <EditText
+            android:id="@+id/fld_first_name"
+            style="@style/wguTextField"
+            android:hint="John"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:id="@+id/fld_msg_first_name"
+            style="@style/wguFormMessage"
+            android:text="" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fld_group_last_name"
+        style="@style/fldGroup"
+        android:layout_below="@+id/fld_group_first_name">
+
+        <TextView
+            android:id="@+id/lbl_last_name"
+            style="@style/wguFormLabel"
+            android:text="@string/last_name" />
+
+        <EditText
+            android:id="@+id/fld_last_name"
+            style="@style/wguTextField"
+            android:hint="Doe"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:id="@+id/fld_msg_last_name"
+            style="@style/wguFormMessage"
+            android:text="" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fld_group_email"
+        style="@style/fldGroup"
+        android:layout_below="@+id/fld_group_last_name">
+
+        <TextView
+            android:id="@+id/lbl_email"
+            style="@style/wguFormLabel"
+            android:text="@string/email" />
+
+        <EditText
+            android:id="@+id/fld_email"
+            style="@style/wguTextField"
+            android:hint="john.doe@go.wgu.edu"
+            android:inputType="textEmailAddress" />
+
+        <TextView
+            android:id="@+id/fld_msg_email"
+            style="@style/wguFormMessage"
+            android:text="" />
+    </LinearLayout>
+
+</RelativeLayout>
