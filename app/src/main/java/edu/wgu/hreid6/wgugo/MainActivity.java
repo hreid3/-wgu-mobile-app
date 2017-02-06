@@ -35,6 +35,7 @@ public class MainActivity extends BaseAndroidActivity {
             Graduate graduate = getGraduate();
             if (graduate == null) {
                 // Popup activity to fetch graduate info
+                startActivity(new Intent(this, GraduateFormActivity.class));
             } else {
                 // put in summary details.
             }

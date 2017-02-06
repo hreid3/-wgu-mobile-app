@@ -62,11 +62,7 @@ abstract class BaseAndroidActivity extends AppCompatActivity {
     protected Graduate getGraduate() throws SQLException {
         Graduate graduate = null;
         if ( graduateDao != null) {
-            graduate = graduateDao.getFirst();
-            if (graduate == null) {
-                startActivity(new Intent(this, GraduateFormActivity.class));
-                // popup graduate activity
-            }
+            graduate = graduateDao.getGraduate();
         }
         return graduate;
     }

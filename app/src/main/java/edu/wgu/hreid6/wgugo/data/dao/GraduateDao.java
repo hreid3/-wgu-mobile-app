@@ -23,14 +23,8 @@ public class GraduateDao extends AbstractDao<Graduate>{
         super(activity);
     }
 
-    public Graduate getById(Integer id) throws SQLException {
-        return getQueryBuilder(Graduate.class).where().eq(colId, id).queryForFirst();
-    }
-
-    public List<Graduate> getAllCourses() throws SQLException {
-        QueryBuilder<Graduate, ?> qb = getQueryBuilder(Graduate.class);
-        List<Graduate> graduates = qb.query();
-        return graduates;
+    public Graduate getGraduate() throws SQLException {
+        return getQueryBuilder(Graduate.class).where().eq(colId, DEFAULT_GRADUATE_ID).queryForFirst();
     }
 
     public boolean createOrUpdate(Graduate graduate) throws SQLException {
@@ -39,11 +33,4 @@ public class GraduateDao extends AbstractDao<Graduate>{
         return stat.getNumLinesChanged() > 0;
     }
 
-    public boolean delete(Graduate course) throws SQLException {
-        return getDao(Graduate.class).delete(course) > 0;
-    }
-
-    public Graduate getFirst() throws SQLException {
-        return getQueryBuilder(Graduate.class).queryForFirst();
-    }
 }

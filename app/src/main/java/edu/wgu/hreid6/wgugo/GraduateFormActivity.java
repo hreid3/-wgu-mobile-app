@@ -9,6 +9,10 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import static android.util.Log.*;
+
+import edu.wgu.hreid6.wgugo.data.model.Graduate;
+
 import static edu.wgu.hreid6.wgugo.FormValidationHelper.*;
 
 public class GraduateFormActivity extends BaseAndroidActivity {
@@ -23,7 +27,16 @@ public class GraduateFormActivity extends BaseAndroidActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        try {
+            Graduate graduate = getGraduate();
+            if (graduate != null) {
+                ((EditText) viewGroup.findViewById(R.id.fld_first_name)).setText(graduate.getFirstName());
+                ((EditText) viewGroup.findViewById(R.id.fld_last_name)).setText(graduate.getLastName());
+                ((EditText) viewGroup.findViewById(R.id.fld_email)).setText(graduate.getEmail());
+            }
+        } catch (Exception ex) {
+            e(getLocalClassName(), "Error fetching graduate data", ex);
+        }
     }
 
     @Override
@@ -44,22 +57,37 @@ public class GraduateFormActivity extends BaseAndroidActivity {
         switch (id) {
             case MENU_ITEM_SAVE_PROFILE:
                 // Validate form fields
-                if (isFormValid()) {
-                    // Save the data in Dao and go to main activity
-                    startActivity(new Intent(this, MainActivity.class));
-                } else {
+                try {
+                    EditText firstName = (EditText) viewGroup.findViewById(R.id.fld_first_name);
+                    EditText lasttName = (EditText) viewGroup.findViewById(R.id.fld_last_name);
+                    EditText email = (EditText) viewGroup.findViewById(R.id.fld_email);
+                    if (isFormValid(firstName, lasttName, email)) {
+                        // Save the data in Dao and go to main activity
+                        Graduate graduate = graduateDao.getGraduate();
+                        if (graduate == null) {
+                            graduate = new Graduate();
+                        }
+                        graduate.setEmail(email.getText().toString());
+                        graduate.setLastName(lasttName.getText().toString());
+                        graduate.setFirstName(firstName.getText().toString());
+                        if (graduateDao.createOrUpdate(graduate)) {
+                            i(getLocalClassName(), "create or update worked");
+                        }
 
+                        startActivity(new Intent(this, MainActivity.class));
+                    } else {
+                        v(getLocalClassName(), "graduate validation errors.");
+                    }
+                } catch (Exception ex) {
+                    e(getLocalClassName(), "Error saving profile", ex);
                 }
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    public boolean isFormValid() {
+    public boolean isFormValid(EditText firstName, EditText lasttName, EditText email) {
         boolean valid = true;
-        EditText firstName = (EditText) viewGroup.findViewById(R.id.fld_first_name);
-        EditText lasttName = (EditText) viewGroup.findViewById(R.id.fld_last_name);
-        EditText email = (EditText) viewGroup.findViewById(R.id.fld_email);
 
         if (!isEmpty(viewGroup, firstName, R.id.fld_msg_first_name)) {
             valid = false;
@@ -70,7 +98,6 @@ public class GraduateFormActivity extends BaseAndroidActivity {
         if (!isEmailValid(viewGroup, email, R.id.fld_msg_email)) {
             valid = false;
         }
-
         return valid;
     }
 
