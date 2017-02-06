@@ -1,5 +1,6 @@
 package edu.wgu.hreid6.wgugo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import static android.util.Log.*;
 
@@ -33,6 +35,9 @@ public class GraduateFormActivity extends BaseAndroidActivity {
                 ((EditText) viewGroup.findViewById(R.id.fld_first_name)).setText(graduate.getFirstName());
                 ((EditText) viewGroup.findViewById(R.id.fld_last_name)).setText(graduate.getLastName());
                 ((EditText) viewGroup.findViewById(R.id.fld_email)).setText(graduate.getEmail());
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            } else {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             }
         } catch (Exception ex) {
             e(getLocalClassName(), "Error fetching graduate data", ex);
@@ -72,6 +77,11 @@ public class GraduateFormActivity extends BaseAndroidActivity {
                         graduate.setFirstName(firstName.getText().toString());
                         if (graduateDao.createOrUpdate(graduate)) {
                             i(getLocalClassName(), "create or update worked");
+                            Context context = getApplicationContext();
+                            CharSequence text = "Profile settings successfully saved.";
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
                         }
 
                         startActivity(new Intent(this, MainActivity.class));

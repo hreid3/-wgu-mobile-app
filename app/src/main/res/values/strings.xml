@@ -18,7 +18,7 @@ Proin tincidunt vitae neque a semper. Pellentesque fermentum metus euismod sodal
     <string name="title_activity_course_detail">Course Details</string>
     <string name="save">Save</string>
     <string name="title_activity_term_detail">Term Details</string>
-    <string name="title_activity_graduate_form">GraduateFormActivity</string>
+    <string name="title_activity_graduate_form">Profile Settings</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="email">Email</string>
