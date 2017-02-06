@@ -4,6 +4,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,6 +19,7 @@ public class FormHelper {
 
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    public static final String DEFAULT_DATE_FORMAT = "MMM dd, yyyy";
 
     public static boolean isEmpty(ViewGroup viewGroup, EditText e, int messageId) {
         TextView msgFld = (TextView)viewGroup.findViewById(messageId);
@@ -54,12 +56,22 @@ public class FormHelper {
         return isValid;
     }
 
+    public static Date getDateFromTextView(TextView v) throws ParseException {
+        if (v != null) {
+            String dateString = v.getText().toString();
+            SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
+            return sdf.parse(dateString);
+
+        }
+        return null;
+    }
+
     public static String getDisplayDate(int year, int month, int day) {
         final Calendar c = Calendar.getInstance();
         c.set(Calendar.YEAR, year);
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, day);
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
         Date d = c.getTime();
 
         return sdf.format(d);

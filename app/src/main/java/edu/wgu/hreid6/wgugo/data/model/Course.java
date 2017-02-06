@@ -30,7 +30,7 @@ public class Course implements Serializable {
         private final String stringValue;
         private STATUS(final String s) { stringValue = s; }
         public String toString() { return stringValue; }
-        }
+    }
 
     @DatabaseField(generatedId = true, columnName = colId)
     private Integer id;

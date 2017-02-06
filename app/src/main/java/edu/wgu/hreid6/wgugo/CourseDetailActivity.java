@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,9 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import static edu.wgu.hreid6.wgugo.FormHelper.*;
+import static android.util.Log.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -27,6 +32,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import edu.wgu.hreid6.wgugo.data.model.Course;
+import edu.wgu.hreid6.wgugo.data.model.Graduate;
 
 public class CourseDetailActivity extends BaseAndroidActivity  implements DatePickerDialog.OnDateSetListener{
 
@@ -43,7 +49,7 @@ public class CourseDetailActivity extends BaseAndroidActivity  implements DatePi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // TODO: disable if someone changes the value.
 
         // Set the defaults...
-        Spinner statuses = (Spinner) findViewById(R.id.fld_statuses);
+        Spinner statuses = (Spinner) findViewById(R.id.fld_course_status);
         ArrayAdapter<Course.STATUS> adapter =new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Course.STATUS.values());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statuses.setAdapter(adapter);
@@ -75,11 +81,67 @@ public class CourseDetailActivity extends BaseAndroidActivity  implements DatePi
         switch (id) {
             case MENU_ITEM_SAVE_COURSE:
                 Snackbar.make(getViewGroup(), "Saving...", Snackbar.LENGTH_LONG).setAction("Action", null).show(); // Progress
-                startActivity(new Intent(this, CoursesLandingActivity.class));
+
+                // Validate form
+                try {
+                    // Title cannot be empty
+                    // Start Date and End dates cannot be empty
+                    // End must not be less than start date
+                    // Course mentor cannot be null
+                    EditText title = (EditText) viewGroup.findViewById(R.id.fld_course_title);
+                    EditText mentor = (EditText) viewGroup.findViewById(R.id.fld_mentor);
+                    TextView startDate = (TextView) viewGroup.findViewById(R.id.ro_start_date);
+                    TextView endDate = (TextView) viewGroup.findViewById(R.id.ro_end_date);
+                    Spinner status = (Spinner) viewGroup.findViewById(R.id.fld_course_status);
+
+                    if (isFormValid(title, mentor, startDate, endDate, status)) {
+                        Graduate graduate = getGraduate();
+                        Course course = new Course();
+                        course.setCourseMentorName(mentor.getText().toString());
+                        course.setTitle(title.getText().toString());
+                        course.setStartDate(getDateFromTextView(startDate));
+                        course.setEndDate(getDateFromTextView(endDate));
+
+                        course.setStatus((Course.STATUS)status.getSelectedItem());
+                        course.setGraduate(graduate);
+
+                        if (courseDao.createOrUpdate(course)) {
+                            i(getLocalClassName(), "create or update for course success:  " + course.getTitle());
+                            Context context = getApplicationContext();
+                            CharSequence text = "Course successfully saved.";
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                            startActivity(new Intent(this, CoursesLandingActivity.class));
+                        }
+                    }
+                } catch (Exception ex) {
+                    e(getLocalClassName(), "Could not create or update course", ex);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private boolean isFormValid(EditText title, EditText mentor, TextView start, TextView end, Spinner status) throws Exception {
+        boolean valid = true;
+        if (!isEmpty(viewGroup, title, R.id.fld_msg_course_title)) {
+            valid = false;
+        }
+        if (!isEmpty(viewGroup, mentor, R.id.fld_msg_mentor)) {
+            valid = false;
+        }
+        Date startDate = getDateFromTextView(start);
+        Date endDate = getDateFromTextView(end);
+
+        if (startDate.getTime() > endDate.getTime()) {
+            ((TextView)viewGroup.findViewById(R.id.fld_msg_start_date)).setText("Start date cannot be greater than end date.");
+        }
+
+        // TODO: need rules for status based on Term metadata
+        return valid;
+
     }
 
     public void showDatePickerDialog(View v) {

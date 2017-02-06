@@ -85,6 +85,14 @@ public class Graduate {
         this.status = status;
     }
 
+    public Collection<Term> getTerms() {
+        return terms;
+    }
+
+    public Collection<Course> getCourses() {
+        return courses;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

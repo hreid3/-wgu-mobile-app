@@ -22,23 +22,23 @@
         android:text="@string/course" />
 
     <LinearLayout
-        android:id="@+id/fld_group_title"
+        android:id="@+id/fld_group_course_title"
         style="@style/fldGroup"
         android:layout_below="@+id/profile_header">
 
         <TextView
-            android:id="@+id/lbl_title"
+            android:id="@+id/lbl_course_title"
             style="@style/wguFormLabel"
             android:text="@string/title" />
 
         <EditText
-            android:id="@+id/fld_title"
+            android:id="@+id/fld_course_title"
             style="@style/wguTextField"
             android:hint="Calculus III"
             android:inputType="textPersonName" />
 
         <TextView
-            android:id="@+id/fld_msg_title"
+            android:id="@+id/fld_msg_course_title"
             style="@style/wguFormMessage"
             android:text="" />
     </LinearLayout>
@@ -46,7 +46,7 @@
     <LinearLayout
         android:id="@+id/fld_group_start_date"
         style="@style/fldGroup"
-        android:layout_below="@+id/fld_group_title">
+        android:layout_below="@+id/fld_group_course_title">
 
         <TextView
             android:id="@+id/lbl_start_date"
@@ -130,7 +130,7 @@
             android:text="@string/status" />
 
         <Spinner
-            android:id="@+id/fld_statuses"
+            android:id="@+id/fld_course_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fld_group_statys" />
