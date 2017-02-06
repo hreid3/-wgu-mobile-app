@@ -26,7 +26,10 @@ public class Term implements Serializable {
 
 
     public enum STATUS {
-        START_APPROVED, INACTIVE, APPROVED, AWAITING_APPROVAL
+        START_APPROVED("Start Approved"), INACTIVE("Inactive"), OPENED("Opened"), AWAITING_APPROVAL("Awaiting Approval");
+        private final String stringValue;
+        private STATUS(final String s) { stringValue = s; }
+        public String toString() { return stringValue; }
     }
 
     @DatabaseField(generatedId = true, columnName = colId)

@@ -3,7 +3,6 @@ package edu.wgu.hreid6.wgugo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +14,7 @@ import static android.util.Log.*;
 
 import edu.wgu.hreid6.wgugo.data.model.Graduate;
 
-import static edu.wgu.hreid6.wgugo.FormValidationHelper.*;
+import static edu.wgu.hreid6.wgugo.FormHelper.*;
 
 public class GraduateFormActivity extends BaseAndroidActivity {
 

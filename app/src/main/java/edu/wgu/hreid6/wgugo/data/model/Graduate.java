@@ -14,7 +14,11 @@ import java.util.Collection;
 public class Graduate {
 
     public enum STATUS {
-        ACTIVE, PENDING, UNDERGRAD, GRAD, ALUMNUS
+        ACTIVE("Active"), PENDING("Pending"), UNDERGRAD("Undergrad"), ALUMNUS("Alumnus");
+        private final String stringValue;
+        private STATUS(final String s) { stringValue = s; }
+        public String toString() { return stringValue; }
+
     }
 
     @DatabaseField(id = true)

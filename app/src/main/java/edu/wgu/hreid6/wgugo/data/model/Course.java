@@ -26,8 +26,11 @@ public class Course implements Serializable {
     public final static String colGradId        = "grad_id";
 
     public enum STATUS {
-        START_APPROVED, PENDING, FAILED, PASSED
-    }
+        START_APPROVED("Approved"), PENDING("Pending"), FAILED("Failed"), PASSED("Passed");
+        private final String stringValue;
+        private STATUS(final String s) { stringValue = s; }
+        public String toString() { return stringValue; }
+        }
 
     @DatabaseField(generatedId = true, columnName = colId)
     private Integer id;

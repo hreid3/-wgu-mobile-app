@@ -4,6 +4,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,7 +14,7 @@ import java.util.regex.Pattern;
  * Created by hreid on 2/5/17.
  */
 
-public class FormValidationHelper {
+public class FormHelper {
 
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -49,5 +52,16 @@ public class FormValidationHelper {
             ((TextView)viewGroup.findViewById(messageId)).setText("");
         }
         return isValid;
+    }
+
+    public static String getDisplayDate(int year, int month, int day) {
+        final Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, day);
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
+        Date d = c.getTime();
+
+        return sdf.format(d);
     }
 }
