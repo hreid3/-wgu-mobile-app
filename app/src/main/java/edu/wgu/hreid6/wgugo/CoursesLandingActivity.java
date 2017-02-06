@@ -7,11 +7,17 @@ import static android.util.Log.*;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import edu.wgu.hreid6.wgugo.adapter.CoursesListAdapter;
 import edu.wgu.hreid6.wgugo.data.model.Course;
+import edu.wgu.hreid6.wgugo.data.model.Graduate;
 
 public class CoursesLandingActivity extends BaseAndroidActivity {
 
@@ -24,10 +30,20 @@ public class CoursesLandingActivity extends BaseAndroidActivity {
         setContentView(R.layout.activity_courses_landing);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Graduate graduate = null;
+
         try {
-            List<Course>  courses = courseDao.getAllCourses();
+            graduate = getGraduate();
         } catch (SQLException e) {
-            e(getClass().getName(), "Error fetching courses", e);
+            e(getLocalClassName(), "Could not fetch Graduate", e);
+        }
+        if (graduate != null) {
+            Collection<Course> courses = graduate.getCourses();
+            if (courses != null) {
+                CoursesListAdapter coursesListAdapter = new CoursesListAdapter(this, R.layout.list_course_item, new ArrayList<Course>(courses));
+                ListView listView = (ListView) findViewById(R.id.courses_list_view);
+                listView.setAdapter(coursesListAdapter);
+            }
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
