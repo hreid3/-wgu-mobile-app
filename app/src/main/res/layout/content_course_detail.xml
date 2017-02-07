@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Jan 1, 1995"
-                android:textSize="22sp"/>
+                android:textSize="16sp"/>
 
             <Button
                 android:id="@+id/btn_start_date_button"
@@ -72,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text="Pick Date"
+                android:textSize="12sp"
                 android:onClick="showDatePickerDialog"/>
         </LinearLayout>
 
@@ -102,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textSize="22sp"/>
+                android:textSize="16sp"/>
 
             <Button
                 android:id="@+id/btn_end_date_button"
@@ -110,6 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text="Pick Date"
+                android:textSize="12sp"
                 android:onClick="showDatePickerDialog"/>
         </LinearLayout>
 
@@ -162,4 +164,12 @@
             style="@style/wguFormMessage"
             android:text="" />
     </LinearLayout>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:id="@+id/id_course"
+        android:text=""
+        />
 </RelativeLayout>

@@ -43,6 +43,9 @@ abstract class BaseAndroidActivity extends AppCompatActivity {
 
     protected static final int MENU_ITEM_SAVE_PROFILE = 0x4000;
 
+    public static final String COURSE_ID = "courseId";
+
+
     CourseDao courseDao; // I do not like each instance getting a copy of an dio
 
     TermDao termDao; // I do not like this

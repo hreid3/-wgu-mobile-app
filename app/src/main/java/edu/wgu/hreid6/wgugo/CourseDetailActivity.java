@@ -25,6 +25,7 @@ import android.widget.Toast;
 import static edu.wgu.hreid6.wgugo.FormHelper.*;
 import static android.util.Log.*;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -61,6 +62,43 @@ public class CourseDetailActivity extends BaseAndroidActivity  implements DatePi
 
         ((TextView)findViewById(R.id.ro_start_date)).setText(getDisplayDate(year, month, day));
         ((TextView)findViewById(R.id.ro_end_date)).setText(getDisplayDate(year, month, day));
+
+        Integer courseId = getIntent().getIntExtra(COURSE_ID, -1);
+        if (!(courseId < 0)) {
+            Course course = null;
+            try {
+                course = courseDao.getById(courseId);
+            } catch (SQLException e) {
+                e(getLocalClassName(), "no course with id " + courseId, e);
+            }
+            if (course != null) {
+                TextView textView = (TextView)findViewById(R.id.id_course);
+                textView.setText(courseId.toString());
+                EditText title = (EditText) findViewById(R.id.fld_course_title);
+                EditText mentor = (EditText) findViewById(R.id.fld_mentor);
+                TextView startDate = (TextView) findViewById(R.id.ro_start_date);
+                TextView endDate = (TextView) findViewById(R.id.ro_end_date);
+                Spinner status = (Spinner) findViewById(R.id.fld_course_status);
+
+                title.setText(course.getTitle());
+                mentor.setText(course.getCourseMentorName());
+
+                if (course.getStartDate() != null) {
+                    startDate.setText(getDisplayDate(course.getStartDate()));
+                }
+
+                if (course.getEndDate() != null) {
+                    endDate.setText(getDisplayDate(course.getEndDate()));
+                }
+
+                for(int i=0; i < Course.STATUS.values().length; i++) {
+                    if (course.getStatus() == Course.STATUS.values()[i]) {
+                        statuses.setSelection(i, true);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -96,7 +134,14 @@ public class CourseDetailActivity extends BaseAndroidActivity  implements DatePi
 
                     if (isFormValid(title, mentor, startDate, endDate, status)) {
                         Graduate graduate = getGraduate();
-                        Course course = new Course();
+
+                        Course course = null;
+                        TextView anIdFld = (TextView)viewGroup.findViewById(R.id.id_course);
+                        if ( anIdFld != null && anIdFld.getText() != null && anIdFld.getText().toString().length() > 0) {
+                            course = courseDao.getById(Integer.parseInt(anIdFld.getText().toString()));
+                        } else {
+                            course = new Course();
+                        }
                         course.setCourseMentorName(mentor.getText().toString());
                         course.setTitle(title.getText().toString());
                         course.setStartDate(getDateFromTextView(startDate));
@@ -114,6 +159,8 @@ public class CourseDetailActivity extends BaseAndroidActivity  implements DatePi
                             toast.show();
                             startActivity(new Intent(this, CoursesLandingActivity.class));
                         }
+                    } else {
+                        return false;
                     }
                 } catch (Exception ex) {
                     e(getLocalClassName(), "Could not create or update course", ex);
@@ -137,6 +184,7 @@ public class CourseDetailActivity extends BaseAndroidActivity  implements DatePi
 
         if (startDate.getTime() > endDate.getTime()) {
             ((TextView)viewGroup.findViewById(R.id.fld_msg_start_date)).setText("Start date cannot be greater than end date.");
+            valid = false;
         }
 
         // TODO: need rules for status based on Term metadata

@@ -66,6 +66,11 @@ public class FormHelper {
         return null;
     }
 
+    public static String getDisplayDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
+        return sdf.format(date);
+    }
+
     public static String getDisplayDate(int year, int month, int day) {
         final Calendar c = Calendar.getInstance();
         c.set(Calendar.YEAR, year);
