@@ -35,10 +35,9 @@ import java.util.HashMap;
 import edu.wgu.hreid6.wgugo.data.model.Course;
 import edu.wgu.hreid6.wgugo.data.model.Graduate;
 
-public class CourseDetailActivity extends BaseAndroidActivity  implements DatePickerDialog.OnDateSetListener{
+public class CourseDetailActivity extends BaseAndroidActivity {
 
     private ViewGroup viewGroup;
-    private int openedDateDialogId; // shucks we have to keep more state.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +77,16 @@ public class CourseDetailActivity extends BaseAndroidActivity  implements DatePi
                 EditText mentor = (EditText) findViewById(R.id.fld_mentor);
                 TextView startDate = (TextView) findViewById(R.id.ro_start_date);
                 TextView endDate = (TextView) findViewById(R.id.ro_end_date);
-                Spinner status = (Spinner) findViewById(R.id.fld_course_status);
+//                Spinner status = (Spinner) findViewById(R.id.fld_course_status);
+                TextView mentorPhone = (EditText) findViewById(R.id.fld_mentor_phone);
+                TextView mentorEmail = (EditText) findViewById(R.id.fld_mentor_email);
+                TextView courseNotes = (EditText) findViewById(R.id.fld_notes);
 
                 title.setText(course.getTitle());
                 mentor.setText(course.getCourseMentorName());
+                mentorPhone.setText(course.getCourseMentorPhone());
+                mentorEmail.setText(course.getCourseMentorEmail());
+                courseNotes.setText(course.getCourseNotes() != null ? course.getCourseNotes() : "");
 
                 if (course.getStartDate() != null) {
                     startDate.setText(getDisplayDate(course.getStartDate()));
@@ -131,8 +136,11 @@ public class CourseDetailActivity extends BaseAndroidActivity  implements DatePi
                     TextView startDate = (TextView) viewGroup.findViewById(R.id.ro_start_date);
                     TextView endDate = (TextView) viewGroup.findViewById(R.id.ro_end_date);
                     Spinner status = (Spinner) viewGroup.findViewById(R.id.fld_course_status);
+                    EditText mentorPhone = (EditText) viewGroup.findViewById(R.id.fld_mentor_phone);
+                    EditText mentorEmail = (EditText) viewGroup.findViewById(R.id.fld_mentor_email);
+                    EditText courseNotes = (EditText) viewGroup.findViewById(R.id.fld_notes);
 
-                    if (isFormValid(title, mentor, startDate, endDate, status)) {
+                    if (isFormValid(title, mentor, startDate, endDate, status, mentorPhone, mentorEmail)) {
                         Graduate graduate = getGraduate();
 
                         Course course = null;
@@ -146,6 +154,11 @@ public class CourseDetailActivity extends BaseAndroidActivity  implements DatePi
                         course.setTitle(title.getText().toString());
                         course.setStartDate(getDateFromTextView(startDate));
                         course.setEndDate(getDateFromTextView(endDate));
+                        course.setCourseMentorPhone(mentorPhone.getText().toString());
+                        course.setCourseMentorEmail(mentorEmail.getText().toString());
+                        if (courseNotes.getText() != null && courseNotes.getText().length() > 0) {
+                            course.setCourseNotes(courseNotes.getText().toString());
+                        }
 
                         course.setStatus((Course.STATUS)status.getSelectedItem());
                         course.setGraduate(graduate);
@@ -171,12 +184,18 @@ public class CourseDetailActivity extends BaseAndroidActivity  implements DatePi
         }
     }
 
-    private boolean isFormValid(EditText title, EditText mentor, TextView start, TextView end, Spinner status) throws Exception {
+    private boolean isFormValid(EditText title, EditText mentor, TextView start, TextView end, Spinner status, EditText mentorPhone, EditText mentorEmail) throws Exception {
         boolean valid = true;
         if (!isEmpty(viewGroup, title, R.id.fld_msg_course_title)) {
             valid = false;
         }
         if (!isEmpty(viewGroup, mentor, R.id.fld_msg_mentor)) {
+            valid = false;
+        }
+        if (!isEmpty(viewGroup, mentorPhone, R.id.fld_msg_mentor_phone)) {
+            valid = false;
+        }
+        if (!isEmailValid(viewGroup, mentorEmail, R.id.fld_msg_mentor_email)) {
             valid = false;
         }
         Date startDate = getDateFromTextView(start);
@@ -192,33 +211,10 @@ public class CourseDetailActivity extends BaseAndroidActivity  implements DatePi
 
     }
 
-    public void showDatePickerDialog(View v) {
-        DatePickerFragment newFragment = new DatePickerFragment();
-        newFragment.activity = this;
-        newFragment.onDateSetListener = this;
-        openedDateDialogId = v.getId();
-        newFragment.show(getFragmentManager(), "datePicker");
-    }
-
     @Override
     public ViewGroup getViewGroup() {
         return this.viewGroup;
     }
 
-    public void onDateSet(DatePicker view, int year, int month, int day) {
-        // Do something with the date chosen by the user
-        String dateString = getDisplayDate(year, month, day);
-        switch (openedDateDialogId) {
-            case R.id.btn_start_date_button:
-                ((TextView)findViewById(R.id.ro_start_date)).setText(dateString);
-                break;
-            case R.id.btn_end_date_button:
-                ((TextView)findViewById(R.id.ro_end_date)).setText(dateString);
-                break;
-
-        }
-        view = view;
-        openedDateDialogId = 0;
-    }
 
 }

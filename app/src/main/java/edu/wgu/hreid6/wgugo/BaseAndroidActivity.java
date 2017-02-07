@@ -10,10 +10,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 import static android.util.Log.*;
+import static edu.wgu.hreid6.wgugo.FormHelper.getDisplayDate;
+
 import java.sql.SQLException;
 import java.util.Calendar;
 
@@ -28,7 +32,7 @@ import edu.wgu.hreid6.wgugo.data.model.Graduate;
  * Created by hreid on 2/3/17.
  */
 
-abstract class BaseAndroidActivity extends AppCompatActivity {
+abstract class BaseAndroidActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     protected static final int MENU_ITEM_ABOUT = 0x1001;
     protected static final int MENU_ITEM_LOGOUT = 0x1020;
     protected static final int MENU_ITEM_PROFILE = 0x1005;
@@ -44,7 +48,8 @@ abstract class BaseAndroidActivity extends AppCompatActivity {
     protected static final int MENU_ITEM_SAVE_PROFILE = 0x4000;
 
     public static final String COURSE_ID = "courseId";
-
+    public static final String TERM_ID = "termId";
+    protected int openedDateDialogId; // shucks we have to keep more state.
 
     CourseDao courseDao; // I do not like each instance getting a copy of an dio
 
@@ -144,4 +149,28 @@ abstract class BaseAndroidActivity extends AppCompatActivity {
             return new DatePickerDialog(activity, onDateSetListener, year, month, day);
         }
     }
+
+    public void showDatePickerDialog(View v) {
+        DatePickerFragment newFragment = new DatePickerFragment();
+        newFragment.activity = this;
+        newFragment.onDateSetListener = this;
+        openedDateDialogId = v.getId();
+        newFragment.show(getFragmentManager(), "datePicker");
+    }
+
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+        // Do something with the date chosen by the user
+        String dateString = getDisplayDate(year, month, day);
+        switch (openedDateDialogId) {
+            case R.id.btn_start_date_button:
+                ((TextView)findViewById(R.id.ro_start_date)).setText(dateString);
+                break;
+            case R.id.btn_end_date_button:
+                ((TextView)findViewById(R.id.ro_end_date)).setText(dateString);
+                break;
+
+        }
+        openedDateDialogId = 0;
+    }
+
 }

@@ -10,8 +10,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
-public class TermsLandingActivity  extends BaseAndroidActivity {
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import edu.wgu.hreid6.wgugo.adapter.TermsListAdapter;
+import edu.wgu.hreid6.wgugo.data.model.Graduate;
+import edu.wgu.hreid6.wgugo.data.model.Term;
+
+import static android.util.Log.e;
+
+public class TermsLandingActivity  extends BaseAndroidActivity  implements AdapterView.OnItemClickListener  {
 
     private ViewGroup viewGroup;
 
@@ -21,9 +33,44 @@ public class TermsLandingActivity  extends BaseAndroidActivity {
         setContentView(R.layout.activity_terms_landing);
         this.viewGroup = (ViewGroup) findViewById(R.id.layout_terms_landing);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        Graduate graduate = null;
         setSupportActionBar(toolbar);
+        try {
+            graduate = getGraduate();
+        } catch (SQLException e) {
+            e(getLocalClassName(), "Could not fetch Graduate", e);
+        }
+        if (graduate != null) {
+            Collection<Term> terms = graduate.getTerms();
+            if (terms != null) {
+                TermsListAdapter termsListAdapter = new TermsListAdapter(this, R.layout.list_term_item, new ArrayList<Term>(terms));
+                ListView listView = (ListView) findViewById(R.id.terms_list_view);
+                listView.setAdapter(termsListAdapter);
+                listView.setOnItemClickListener(this);
+            }
+        }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        try {
+            Intent intent = new Intent(this, TermDetailActivity.class);
+            Graduate graduate = graduateDao.getGraduate();
+            if (graduate != null) {
+                Collection<Term> terms = graduate.getTerms();
+
+                Term term = (new ArrayList<Term>(terms)).get(position);
+                intent.putExtra(TERM_ID, term.getPid());
+            }
+            startActivity(intent);
+        } catch (Exception e) {
+            e(getLocalClassName(), "graduate is null", e);
+        }
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
