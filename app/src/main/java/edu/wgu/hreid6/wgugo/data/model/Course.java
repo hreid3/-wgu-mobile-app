@@ -16,20 +16,29 @@ import java.util.HashSet;
 @DatabaseTable(tableName = "course")
 public class Course implements Serializable {
 
-    public final static String colId            = "id";
-    public final static String colTitle         = "title";
-    public final static String colStartDate     = "start_date";
-    public final static String colEndDate       = "end_date";
-    public final static String colStatus        = "status";
-    public final static String colMentorName    = "mentor_name";
-    public final static String colTermId        = "term_id";
-    public final static String colGradId        = "grad_id";
+    public final static String colId = "id";
+    public final static String colTitle = "title";
+    public final static String colStartDate = "start_date";
+    public final static String colEndDate = "end_date";
+    public final static String colStatus = "status";
+    public final static String colMentorName = "mentor_name";
+    public final static String colTermId = "term_id";
+    public final static String colGradId = "grad_id";
+    public final static String colMentorPhone = "mentor_phone";
+    public final static String colMentorEmail = "mentor_email";
+    public final static String colOptionalNotes = "notes";
 
     public enum STATUS {
         START_APPROVED("Approved"), PENDING("Pending"), FAILED("Failed"), PASSED("Passed");
         private final String stringValue;
-        private STATUS(final String s) { stringValue = s; }
-        public String toString() { return stringValue; }
+
+        private STATUS(final String s) {
+            stringValue = s;
+        }
+
+        public String toString() {
+            return stringValue;
+        }
     }
 
     @DatabaseField(generatedId = true, columnName = colId)
@@ -49,6 +58,15 @@ public class Course implements Serializable {
 
     @DatabaseField(canBeNull = true, dataType = DataType.STRING, width = 2048, columnName = colMentorName)
     private String courseMentorName;
+
+    @DatabaseField(canBeNull = true, dataType = DataType.STRING, width = 2048, columnName = colMentorPhone)
+    private String courseMentorPhone;
+
+    @DatabaseField(canBeNull = true, dataType = DataType.STRING, width = 2048, columnName = colMentorEmail)
+    private String courseMentorEmail;
+
+    @DatabaseField(canBeNull = true, dataType = DataType.STRING, width = 2048, columnName = colOptionalNotes)
+    private String courseNotes;
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = colTermId)
     private Term term;
@@ -141,6 +159,30 @@ public class Course implements Serializable {
 
     public void setGraduate(Graduate graduate) {
         this.graduate = graduate;
+    }
+
+    public String getCourseMentorPhone() {
+        return courseMentorPhone;
+    }
+
+    public void setCourseMentorPhone(String courseMentorPhone) {
+        this.courseMentorPhone = courseMentorPhone;
+    }
+
+    public String getCourseMentorEmail() {
+        return courseMentorEmail;
+    }
+
+    public void setCourseMentorEmail(String courseMentorEmail) {
+        this.courseMentorEmail = courseMentorEmail;
+    }
+
+    public String getCourseNotes() {
+        return courseNotes;
+    }
+
+    public void setCourseNotes(String courseNotes) {
+        this.courseNotes = courseNotes;
     }
 
     @Override

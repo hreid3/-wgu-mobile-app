@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -36,6 +37,10 @@ public class CoursesListAdapter extends ArrayAdapter<Course> {
         Course course = courses.get(position);
         TextView title = (TextView) convertView.findViewById(R.id.lbl_course_item_title);
         title.setText(course.getTitle());
+
+
+        Button button = (Button)convertView.findViewById(R.id.btn_course_item_delete);
+        button.setTag(course.getId());
         return convertView;
     }
 }

@@ -1,5 +1,6 @@
 package edu.wgu.hreid6.wgugo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -91,6 +93,27 @@ public class CoursesLandingActivity extends BaseAndroidActivity  implements Adap
         }
     }
 
+    public void deleteCourseFromGrid(View v) {
+        Object tag = v.getTag();
+        if (tag != null) {
+            try {
+                Integer i = new Integer(tag.toString());
+                Course c = courseDao.getById(i);
+                if (courseDao.delete(c)) {
+                    i(getLocalClassName(), "succesfully deleted " + c.getId());
+                    Intent intent = new Intent(this, CoursesLandingActivity.class);
+                    Context context = getApplicationContext();
+                    CharSequence text = "Course successfully deleted.";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                    startActivity(intent);
+                }
+            } catch (Exception ex) {
+                e(getLocalClassName(), "could not delete cource", ex);
+            }
+        }
+    }
 
     @Override
     protected ViewGroup getViewGroup() {

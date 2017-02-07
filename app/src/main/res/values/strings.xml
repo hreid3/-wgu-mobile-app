@@ -28,4 +28,5 @@ Proin tincidunt vitae neque a semper. Pellentesque fermentum metus euismod sodal
     <string name="start_date">Start Date</string>
     <string name="course_mentor">Course Mentor</string>
     <string name="status">Status</string>
+    <string name="term">Term</string>
 </resources>
