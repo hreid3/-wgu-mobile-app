@@ -174,15 +174,14 @@
                 android:layout_gravity="right"
                 android:text="Add Course"
                 android:textSize="8sp"
+                android:id="@+id/btn_add_course_to_term"
                 android:onClick="addCourseToTerm"/>
-            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ListView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/term_courses_list"></ListView>
-            </ScrollView>
         </LinearLayout>
     </ScrollView>
 

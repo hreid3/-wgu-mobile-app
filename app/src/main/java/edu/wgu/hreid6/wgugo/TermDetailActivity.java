@@ -3,25 +3,31 @@ package edu.wgu.hreid6.wgugo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 
+import edu.wgu.hreid6.wgugo.adapter.CoursesListAdapter;
+import edu.wgu.hreid6.wgugo.data.model.Course;
 import edu.wgu.hreid6.wgugo.data.model.Graduate;
 import edu.wgu.hreid6.wgugo.data.model.Term;
 
@@ -29,13 +35,14 @@ import static android.util.Log.e;
 import static android.util.Log.i;
 import static edu.wgu.hreid6.wgugo.FormHelper.getDateFromTextView;
 import static edu.wgu.hreid6.wgugo.FormHelper.getDisplayDate;
-import static edu.wgu.hreid6.wgugo.FormHelper.isEmailValid;
 import static edu.wgu.hreid6.wgugo.FormHelper.isEmpty;
+import static edu.wgu.hreid6.wgugo.FormHelper.setListViewHeightBasedOnChildren;
 
 public class TermDetailActivity extends BaseAndroidActivity {
 
     private ViewGroup viewGroup;
-
+    private ListPopupWindow listPopupWindow; // We need to maintain state for courses popup.
+    private CoursesListAdapter coursesListAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +50,7 @@ public class TermDetailActivity extends BaseAndroidActivity {
         this.viewGroup = (ViewGroup) findViewById(R.id.layout_term_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Collection<Course> termCourses = new ArrayList<>();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Set the defaults...
@@ -90,6 +98,66 @@ public class TermDetailActivity extends BaseAndroidActivity {
                         break;
                     }
                 }
+                termCourses = term.getCourses();
+            }
+        }
+
+        listPopupWindow = new ListPopupWindow(this);
+        Collection<Course> courses = null;
+        try {
+            courses = courseDao.getCoursesNotInTerm();
+        } catch (SQLException e) {
+            e(getLocalClassName(), "could not get courses", e);
+        }
+        Collection<Course> deltaCourses = new ArrayList<>(); // This looks better in Java 8
+        for(Course aCourse : courses) {
+            if (!termCourses.contains(aCourse)) {
+                deltaCourses.add(aCourse);
+            }
+        }
+        coursesListAdapter = new CoursesListAdapter(this, R.layout.list_course_item, new ArrayList<Course>(deltaCourses), R.layout.list_term_course_item);
+        final CoursesListAdapter termCoursesListAdapter = new CoursesListAdapter(this, R.layout.list_course_item, new ArrayList<Course>(termCourses), R.layout.list_course_item);
+        final ListView listView = (ListView) findViewById(R.id.term_courses_list);
+        listView.setAdapter(termCoursesListAdapter);
+        listView.setClickable(false);
+        listPopupWindow.setAdapter(coursesListAdapter);
+        listPopupWindow.setAnchorView(findViewById(R.id.btn_add_course_to_term));
+        listPopupWindow.setWidth(measureContentWidth(coursesListAdapter));
+        listPopupWindow.setModal(true);
+        setListViewHeightBasedOnChildren(listView);
+        listPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Course item = coursesListAdapter.getItem(position);
+                coursesListAdapter.remove(item);
+                termCoursesListAdapter.add(item);
+                setListViewHeightBasedOnChildren(listView);
+                termCoursesListAdapter.notifyDataSetChanged();
+                coursesListAdapter.notifyDataSetChanged();
+                listPopupWindow.dismiss();
+            }
+        });
+    }
+
+    public void addCourseToTerm(View view) {
+        if (listPopupWindow != null) {
+            listPopupWindow.show();
+        }
+    }
+
+    public void deleteCourseFromGrid(View v) {
+        final ListView listView = (ListView) findViewById(R.id.term_courses_list);
+        ArrayAdapter<Course> la = (ArrayAdapter<Course>)listView.getAdapter();
+
+        Object tag = v.getTag();
+        if (tag != null) {
+            Integer i = new Integer(tag.toString());
+            try {
+                Course c = courseDao.getById(i);
+                la.remove(c);
+                coursesListAdapter.add(c);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -105,9 +173,6 @@ public class TermDetailActivity extends BaseAndroidActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch (id) {
             case MENU_ITEM_SAVE_TERM:
@@ -138,14 +203,25 @@ public class TermDetailActivity extends BaseAndroidActivity {
                         term.setStatus((Term.STATUS)status.getSelectedItem());
                         term.setGraduate(graduate);
 
+                        final ListView listView = (ListView) findViewById(R.id.term_courses_list);
+                        ListAdapter la = listView.getAdapter();
                         if (termDao.createOrUpdate(term)) {
                             i(getLocalClassName(), "create or update for term success:  " + term.getTitle());
-                            Context context = getApplicationContext();
-                            CharSequence text = "Term successfully saved.";
-                            int duration = Toast.LENGTH_LONG;
-                            Toast toast = Toast.makeText(context, text, duration);
-                            toast.show();
+                            saySomething("Term successfully saved.");
                             startActivity(new Intent(this, TermsLandingActivity.class));
+                        }
+                        // Reset all courses, then activate the selected ones
+                        if (term.getCourses() != null) {
+                            for (Course course : term.getCourses()) {
+                                course.setTerm(null);
+                                courseDao.createOrUpdate(course);
+                            }
+                        }
+                        for(int i=0; i < la.getCount(); i++) {
+                            Course course = (Course) la.getItem(i);
+                            course = courseDao.getById(course.getId()); // reattach
+                            course.setTerm(term);
+                            courseDao.createOrUpdate(course);
                         }
                     } else {
                         return false;
@@ -181,4 +257,29 @@ public class TermDetailActivity extends BaseAndroidActivity {
     protected ViewGroup getViewGroup() {
         return this.viewGroup;
     }
+
+    private int measureContentWidth(ListAdapter adapter) {
+        // Menus don't tend to be long, so this is more sane than it looks.
+        int width = 0;
+        View itemView = null;
+        int itemType = 0;
+        final int widthMeasureSpec =
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        final int heightMeasureSpec =
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        final int count = adapter.getCount();
+        for (int i = 0; i < count; i++) {
+            final int positionType = adapter.getItemViewType(i);
+            if (positionType != itemType) {
+                itemType = positionType;
+                itemView = null;
+            }
+            itemView = adapter.getView(i, itemView, new FrameLayout(this));
+            itemView.measure(widthMeasureSpec, heightMeasureSpec);
+            width = Math.max(width, itemView.getMeasuredWidth());
+        }
+        return width;
+    }
+
+
 }

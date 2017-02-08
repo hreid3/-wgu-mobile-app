@@ -165,11 +165,7 @@ public class CourseDetailActivity extends BaseAndroidActivity {
 
                         if (courseDao.createOrUpdate(course)) {
                             i(getLocalClassName(), "create or update for course success:  " + course.getTitle());
-                            Context context = getApplicationContext();
-                            CharSequence text = "Course successfully saved.";
-                            int duration = Toast.LENGTH_LONG;
-                            Toast toast = Toast.makeText(context, text, duration);
-                            toast.show();
+                            saySomething("Course successfully saved.");
                             startActivity(new Intent(this, CoursesLandingActivity.class));
                         }
                     } else {

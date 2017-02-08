@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import static android.util.Log.*;
 import static edu.wgu.hreid6.wgugo.FormHelper.getDisplayDate;
@@ -171,6 +172,14 @@ abstract class BaseAndroidActivity extends AppCompatActivity implements DatePick
 
         }
         openedDateDialogId = 0;
+    }
+
+    public void saySomething(String message) {
+        CharSequence text = message;
+        int duration = Toast.LENGTH_LONG;
+        Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+        toast.show();
+
     }
 
 }

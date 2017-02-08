@@ -44,7 +44,7 @@ public class CoursesLandingActivity extends BaseAndroidActivity  implements Adap
         if (graduate != null) {
             Collection<Course> courses = graduate.getCourses();
             if (courses != null) {
-                CoursesListAdapter coursesListAdapter = new CoursesListAdapter(this, R.layout.list_course_item, new ArrayList<Course>(courses));
+                CoursesListAdapter coursesListAdapter = new CoursesListAdapter(this, R.layout.list_course_item, new ArrayList<Course>(courses), R.layout.list_course_item);
                 ListView listView = (ListView) findViewById(R.id.courses_list_view);
                 listView.setAdapter(coursesListAdapter);
                 listView.setOnItemClickListener(this);

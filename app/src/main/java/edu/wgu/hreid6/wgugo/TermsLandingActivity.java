@@ -1,5 +1,6 @@
 package edu.wgu.hreid6.wgugo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,16 +13,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import edu.wgu.hreid6.wgugo.adapter.TermsListAdapter;
+import edu.wgu.hreid6.wgugo.data.model.Course;
 import edu.wgu.hreid6.wgugo.data.model.Graduate;
 import edu.wgu.hreid6.wgugo.data.model.Term;
 
 import static android.util.Log.e;
+import static android.util.Log.i;
 
 public class TermsLandingActivity  extends BaseAndroidActivity  implements AdapterView.OnItemClickListener  {
 
@@ -70,6 +74,27 @@ public class TermsLandingActivity  extends BaseAndroidActivity  implements Adapt
         }
     }
 
+    public void deleteCourseFromGrid(View v) {
+        Object tag = v.getTag();
+        if (tag != null) {
+            try {
+                Integer i = new Integer(tag.toString());
+                Term t = termDao.getById(i);
+                if (t.getCourses() != null && t.getCourses().size() > 0) {
+                    saySomething("You cannot delete a term with assigned courses.  Please remove the courses from the term.");
+                } else {
+                    if (termDao.delete(t)) {
+                        i(getLocalClassName(), "succesfully deleted " + t.getPid());
+                        Intent intent = new Intent(this, TermsLandingActivity.class);
+                        saySomething("Term successfully deleted.");
+                        startActivity(intent);
+                    }
+                }
+            } catch (Exception ex) {
+                e(getLocalClassName(), "could not delete cource", ex);
+            }
+        }
+    }
 
 
     @Override
@@ -94,7 +119,6 @@ public class TermsLandingActivity  extends BaseAndroidActivity  implements Adapt
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
     @Override
     protected ViewGroup getViewGroup() {

@@ -21,26 +21,29 @@ import edu.wgu.hreid6.wgugo.data.model.Course;
 public class CoursesListAdapter extends ArrayAdapter<Course> {
 
     private List<Course> courses;
+    private int layout;
 
-    public CoursesListAdapter(Context context, int resource, List<Course> courses) {
+    public CoursesListAdapter(Context context, int resource, List<Course> courses, int layout) {
         super(context, resource, courses);
         this.courses = courses;
+        this.layout = layout;
     }
 
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_course_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(layout, parent, false);
         }
 
         Course course = courses.get(position);
         TextView title = (TextView) convertView.findViewById(R.id.lbl_course_item_title);
         title.setText(course.getTitle());
 
-
-        Button button = (Button)convertView.findViewById(R.id.btn_course_item_delete);
-        button.setTag(course.getId());
+        Button button = (Button) convertView.findViewById(R.id.btn_course_item_delete);
+        if (button != null) {
+            button.setTag(course.getId());
+        }
         return convertView;
     }
 }

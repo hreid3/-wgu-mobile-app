@@ -13,7 +13,8 @@ import javax.inject.Singleton;
 import edu.wgu.hreid6.wgugo.data.model.Assessment;
 import edu.wgu.hreid6.wgugo.data.model.Course;
 
-import static edu.wgu.hreid6.wgugo.data.model.Term.colId;
+import static edu.wgu.hreid6.wgugo.data.model.Course.colId;
+import static edu.wgu.hreid6.wgugo.data.model.Course.colTermId;
 
 /**
  * Created by hreid on 2/3/17.
@@ -32,6 +33,10 @@ public class CourseDao extends AbstractDao<Course>{
         QueryBuilder<Course, ?> qb = getQueryBuilder(Course.class);
         List<Course> courses = qb.query();
         return courses;
+    }
+
+    public List<Course> getCoursesNotInTerm() throws SQLException {
+        return getQueryBuilder(Course.class).where().isNull(colTermId).query();
     }
 
     public boolean createOrUpdate(Course course) throws SQLException {
