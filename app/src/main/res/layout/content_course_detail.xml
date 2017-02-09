@@ -249,6 +249,25 @@
                     style="@style/wguFormMessage"
                     android:text="" />
             </LinearLayout>
+            <TextView
+                android:id="@+id/lbl_courses"
+                style="@style/wguFormLabel"
+                android:text="Assessments"
+                android:textAlignment="center"/>
+
+            <!--<Button-->
+                <!--android:layout_width="70dp"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_gravity="right"-->
+                <!--android:text="Add Course"-->
+                <!--android:textSize="8sp"-->
+                <!--android:id="@+id/btn_add_course_to_term"-->
+                <!--android:onClick="addCourseToTerm"/>-->
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/term_assessments_list"></ListView>
+
         </LinearLayout>
     </ScrollView>
 

@@ -7,9 +7,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -146,7 +148,7 @@ public class AssessmentActivity extends BaseAndroidActivity {
 
                         if (assessmentDao.createOrUpdate(assessment)) {
                             i(getLocalClassName(), "create or update for assessment success:  " + course.getTitle());
-                            saySomething("Course successfully saved.");
+                            saySomething("Assessment successfully saved.");
                             intent.putExtra(COURSE_ID, course.getId());
                             intent.putExtra(ASSESSMENT_ID, assessment.getId());
                             startActivity(intent);

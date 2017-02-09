@@ -15,9 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,10 +30,15 @@ import static android.util.Log.*;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
+import edu.wgu.hreid6.wgugo.adapter.AssessmentListAdapter;
+import edu.wgu.hreid6.wgugo.adapter.CoursesListAdapter;
+import edu.wgu.hreid6.wgugo.data.model.Assessment;
 import edu.wgu.hreid6.wgugo.data.model.Course;
 import edu.wgu.hreid6.wgugo.data.model.Graduate;
 
@@ -101,6 +108,29 @@ public class CourseDetailActivity extends BaseAndroidActivity {
                         statuses.setSelection(i, true);
                         break;
                     }
+                }
+                final Collection<Assessment> assessments = course.getAssessments();
+                if (assessments != null) {
+                    final AssessmentListAdapter assessmentListAdapter = new AssessmentListAdapter(this, R.layout.list_assessment_item, new ArrayList<Assessment>(assessments), R.layout.list_assessment_item);
+                    final ListView listView = (ListView) findViewById(R.id.term_assessments_list);
+                    listView.setAdapter(assessmentListAdapter);
+//                    listView.setClickable(false);
+                    setListViewHeightBasedOnChildren(listView);
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            try {
+                                Intent intent = new Intent(CourseDetailActivity.this, AssessmentActivity.class);
+                                Assessment assessment = (new ArrayList<Assessment>(assessments)).get(position);
+                                intent.putExtra(ASSESSMENT_ID, assessment.getId());
+                                intent.putExtra(COURSE_ID, getIntent().getIntExtra(COURSE_ID, -1));
+                                startActivity(intent);
+                            } catch (Exception e) {
+                                e(getLocalClassName(), "graduate is null", e);
+                            }
+
+                        }
+                    });
                 }
             }
         }
@@ -173,6 +203,23 @@ public class CourseDetailActivity extends BaseAndroidActivity {
                         course.setGraduate(graduate);
 
                         if (courseDao.createOrUpdate(course)) {
+                            // Reset all courses, then activate the selected ones
+                            if (course.getAssessments() != null) {
+                                for (Assessment assessment : course.getAssessments()) {
+                                    assessment.setCourse(null);
+                                    assessmentDao.createOrUpdate(assessment);
+                                }
+                            }
+
+                            final ListView listView = (ListView) findViewById(R.id.term_assessments_list);
+                            ArrayAdapter<Assessment> la = (ArrayAdapter<Assessment>)listView.getAdapter();
+                            for(int i=0; i < la.getCount(); i++) {
+                                Assessment assessment = (Assessment) la.getItem(i);
+                                assessment = assessmentDao.getById(assessment.getId()); // reattach
+                                assessment.setCourse(course);
+                                assessmentDao.createOrUpdate(assessment);
+                            }
+
                             i(getLocalClassName(), "create or update for course success:  " + course.getTitle());
                             saySomething("Course successfully saved.");
                             if(id == MENU_ITEM_SAVE_COURSE) {
@@ -227,5 +274,20 @@ public class CourseDetailActivity extends BaseAndroidActivity {
         return this.viewGroup;
     }
 
+    public void deleteAssessmentFromGrid(View v) {
+        final ListView listView = (ListView) findViewById(R.id.term_assessments_list);
+        ArrayAdapter<Assessment> la = (ArrayAdapter<Assessment>)listView.getAdapter();
+
+        Object tag = v.getTag();
+        if (tag != null) {
+            Integer i = new Integer(tag.toString());
+            try {
+                Assessment c = assessmentDao.getById(i);
+                la.remove(c);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }

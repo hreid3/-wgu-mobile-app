@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="35dp"
+    android:id="@+id/layout_assessment_list_item"
+    android:descendantFocusability="blocksDescendants">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Objective"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="14dp"
+            android:textSize="15sp"
+            android:id="@+id/lbl_assessment_item_title"
+            android:layout_toStartOf="@+id/lbl_assessment_item_duedate"
+            android:layout_centerVertical="true"
+            android:focusable="false"
+            android:clickable="false"
+            android:layout_weight=".2"
+            android:gravity="center_vertical"
+            android:layout_alignBaseline="@+id/btn_assessment_item_delete"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="July 23, 2017"
+            android:ems="1"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="14dp"
+            android:textSize="15sp"
+            android:id="@+id/lbl_assessment_item_duedate"
+            android:layout_toStartOf="@+id/btn_assessment_item_delete"
+            android:layout_centerVertical="true"
+            android:focusable="false"
+            android:clickable="false"
+            android:layout_weight=".5"
+            android:gravity="center_vertical"
+            android:layout_alignBaseline="@+id/btn_assessment_item_delete"/>
+
+
+        <Button
+            android:text="Delete"
+            android:onClick="deleteAssessmentFromGrid"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:textSize="10sp"
+            android:layout_alignParentEnd="true"
+            android:layout_weight=".2"
+            android:id="@+id/btn_assessment_item_delete"
+            android:layout_marginEnd="14dp"/>
+</LinearLayout>
+</RelativeLayout>
