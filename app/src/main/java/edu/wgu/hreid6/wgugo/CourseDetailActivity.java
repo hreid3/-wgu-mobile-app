@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -114,6 +116,12 @@ public class CourseDetailActivity extends BaseAndroidActivity {
                     final AssessmentListAdapter assessmentListAdapter = new AssessmentListAdapter(this, R.layout.list_assessment_item, new ArrayList<Assessment>(assessments), R.layout.list_assessment_item);
                     final ListView listView = (ListView) findViewById(R.id.term_assessments_list);
                     listView.setAdapter(assessmentListAdapter);
+                    // Set the header of the ListView
+                    final LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    final View rowView = inflater.inflate(R.layout.list_assessment_header, listView, false);
+                    listView.addHeaderView(rowView);
+
+
 //                    listView.setClickable(false);
                     setListViewHeightBasedOnChildren(listView);
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -212,7 +220,8 @@ public class CourseDetailActivity extends BaseAndroidActivity {
                             }
 
                             final ListView listView = (ListView) findViewById(R.id.term_assessments_list);
-                            ArrayAdapter<Assessment> la = (ArrayAdapter<Assessment>)listView.getAdapter();
+                            HeaderViewListAdapter hvla = (HeaderViewListAdapter) listView.getAdapter();
+                            ArrayAdapter<Assessment> la = (ArrayAdapter<Assessment>) hvla.getWrappedAdapter();
                             for(int i=0; i < la.getCount(); i++) {
                                 Assessment assessment = (Assessment) la.getItem(i);
                                 assessment = assessmentDao.getById(assessment.getId()); // reattach

@@ -263,11 +263,16 @@
                 <!--android:textSize="8sp"-->
                 <!--android:id="@+id/btn_add_course_to_term"-->
                 <!--android:onClick="addCourseToTerm"/>-->
-            <ListView
-                android:layout_width="match_parent"
+            <TableLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/term_assessments_list"></ListView>
-
+                android:orientation="vertical"
+                android:padding="10dip" >
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/term_assessments_list"></ListView>
+            </TableLayout>
         </LinearLayout>
     </ScrollView>
 
