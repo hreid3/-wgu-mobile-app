@@ -111,7 +111,9 @@ public class CourseDetailActivity extends BaseAndroidActivity {
         // Inflate the menu; this addsc items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         menu.add(0, MENU_ITEM_SAVE_COURSE, 100, R.string.save);
+        menu.add(0, MENU_ITEM_ASSESSMENT, 90, "Assessment"); // Only add assessments for saved courses
         menu.findItem(MENU_ITEM_SAVE_COURSE).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        menu.findItem(MENU_ITEM_ASSESSMENT).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -121,10 +123,18 @@ public class CourseDetailActivity extends BaseAndroidActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        TextView anIdFld = (TextView)viewGroup.findViewById(R.id.id_course);
         switch (id) {
+            case MENU_ITEM_ASSESSMENT:
+                if ( anIdFld == null && anIdFld.getText() != null && anIdFld.getText().toString().length() > 0) {
+                    Intent intent = new Intent(this, AssessmentActivity.class);
+                    intent.putExtra(COURSE_ID, anIdFld.getText().toString().length());
+                    startActivityForResult(intent, anIdFld.getText().toString().length());
+                    return true;
+                }
+                // Fall through and let save do its thing because it is new Course
             case MENU_ITEM_SAVE_COURSE:
                 Snackbar.make(getViewGroup(), "Saving...", Snackbar.LENGTH_LONG).setAction("Action", null).show(); // Progress
-
                 // Validate form
                 try {
                     // Title cannot be empty
@@ -144,7 +154,6 @@ public class CourseDetailActivity extends BaseAndroidActivity {
                         Graduate graduate = getGraduate();
 
                         Course course = null;
-                        TextView anIdFld = (TextView)viewGroup.findViewById(R.id.id_course);
                         if ( anIdFld != null && anIdFld.getText() != null && anIdFld.getText().toString().length() > 0) {
                             course = courseDao.getById(Integer.parseInt(anIdFld.getText().toString()));
                         } else {
@@ -166,7 +175,13 @@ public class CourseDetailActivity extends BaseAndroidActivity {
                         if (courseDao.createOrUpdate(course)) {
                             i(getLocalClassName(), "create or update for course success:  " + course.getTitle());
                             saySomething("Course successfully saved.");
-                            startActivity(new Intent(this, CoursesLandingActivity.class));
+                            if(id == MENU_ITEM_SAVE_COURSE) {
+                                startActivity(new Intent(this, CoursesLandingActivity.class));
+                            } else {
+                                Intent intent = new Intent(this, AssessmentActivity.class);
+                                intent.putExtra(COURSE_ID, getIntent().getIntExtra(COURSE_ID, -1));
+                                startActivity(intent);
+                            }
                         }
                     } else {
                         return false;

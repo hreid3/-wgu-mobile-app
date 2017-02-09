@@ -24,6 +24,7 @@ import java.util.Calendar;
 
 import javax.inject.Inject;
 
+import edu.wgu.hreid6.wgugo.data.dao.AssessmentDao;
 import edu.wgu.hreid6.wgugo.data.dao.CourseDao;
 import edu.wgu.hreid6.wgugo.data.dao.GraduateDao;
 import edu.wgu.hreid6.wgugo.data.dao.TermDao;
@@ -47,9 +48,13 @@ abstract class BaseAndroidActivity extends AppCompatActivity implements DatePick
     protected static final int MENU_ITEM_SAVE_TERM = 0x3010;
 
     protected static final int MENU_ITEM_SAVE_PROFILE = 0x4000;
+    protected static final int MENU_ITEM_SAVE_ASSESSMENT = 0x5000;
+    protected static final int MENU_ITEM_ASSESSMENT = 0x5010;
 
     public static final String COURSE_ID = "courseId";
     public static final String TERM_ID = "termId";
+    public static final String ASSESSMENT_ID = "assessmentId";
+
     protected int openedDateDialogId; // shucks we have to keep more state.
 
     CourseDao courseDao; // I do not like each instance getting a copy of an dio
@@ -57,6 +62,8 @@ abstract class BaseAndroidActivity extends AppCompatActivity implements DatePick
     TermDao termDao; // I do not like this
 
     GraduateDao graduateDao;
+
+    AssessmentDao assessmentDao;
 
     public BaseAndroidActivity() {
     }
@@ -71,6 +78,9 @@ abstract class BaseAndroidActivity extends AppCompatActivity implements DatePick
         }
         if (graduateDao == null) {
             graduateDao = new GraduateDao(this);
+        }
+        if (assessmentDao == null) {
+            assessmentDao = new AssessmentDao(this);
         }
         super.onCreate(savedInstanceState);
     }
@@ -169,7 +179,9 @@ abstract class BaseAndroidActivity extends AppCompatActivity implements DatePick
             case R.id.btn_end_date_button:
                 ((TextView)findViewById(R.id.ro_end_date)).setText(dateString);
                 break;
-
+            case R.id.btn_due_date_button:
+                ((TextView)findViewById(R.id.ro_due_date)).setText(dateString);
+                break;
         }
         openedDateDialogId = 0;
     }

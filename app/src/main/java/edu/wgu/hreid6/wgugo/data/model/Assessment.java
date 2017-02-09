@@ -4,7 +4,9 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by hreid on 2/3/17.
@@ -17,24 +19,36 @@ public class Assessment {
     public final static String colDueDate = "due_date";
     public final static String colNotes = "notes";
     public final static String colNotify = "notify";
+    public final static String colPhotopaths = "photopaths";
 
     public final static String colCourseId = "course_id";
 
     public enum TYPE {
-        PERFORMANCE, OBJECTIVE
+        OBJECTIVE("Objective"), PERFORMANCE("Performance");
+        private final String stringValue;
+        private TYPE(final String s) {
+            stringValue = s;
+        }
+        public String toString() {
+            return stringValue;
+        }
+
     }
 
     @DatabaseField(generatedId = true, columnName = colId)
     private Integer id;
 
     @DatabaseField(canBeNull = false, dataType = DataType.ENUM_STRING, columnName = colType)
-    private TYPE type;
+    private TYPE type = TYPE.OBJECTIVE;
 
     @DatabaseField(canBeNull = false, dataType = DataType.DATE_STRING, columnName = colDueDate)
     private Date dueDate;
 
     @DatabaseField(width = 4096, columnName = colNotes)
     private String notes;
+
+//    @DatabaseField(width = 4096, columnName = colPhotopaths)
+    private String photoPaths;
 
     @DatabaseField(columnName = colNotify)
     private boolean notify;
@@ -47,7 +61,6 @@ public class Assessment {
     public Assessment() {
         this.course = new Course();
     }
-
 
     public Integer getId() {
         return id;
@@ -95,6 +108,20 @@ public class Assessment {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public List<String> getFilePaths() {
+        // Need JSON
+        return null;
+    }
+
+    public void addFilePath(String path) {
+        List<String> paths = getFilePaths();
+        if (path == null) {
+            paths = new ArrayList<>();
+        }
+        paths.add(path);
+        // Need JSON
     }
 
     @Override

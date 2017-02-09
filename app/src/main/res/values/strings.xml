@@ -29,4 +29,5 @@ Proin tincidunt vitae neque a semper. Pellentesque fermentum metus euismod sodal
     <string name="course_mentor">Course Mentor</string>
     <string name="status">Status</string>
     <string name="term">Term</string>
+    <string name="title_activity_assessment">AssessmentActivity</string>
 </resources>

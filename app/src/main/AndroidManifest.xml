@@ -72,6 +72,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.wgu.hreid6.wgugo.MainActivity" />
         </activity>
+        <activity
+            android:name=".AssessmentActivity"
+            android:label="@string/title_activity_assessment"
+            android:parentActivityName=".CourseDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.wgu.hreid6.wgugo.CourseDetailActivity" />
+        </activity>
     </application>
 
 </manifest>

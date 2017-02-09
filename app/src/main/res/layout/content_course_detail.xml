@@ -12,7 +12,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="edu.wgu.hreid6.wgugo.CourseDetailActivity"
-    tools:showIn="@layout/activity_course_detail">
+    tools:showIn="@layout/activity_course_detail"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    >
 
     <TextView
         android:id="@+id/profile_header"

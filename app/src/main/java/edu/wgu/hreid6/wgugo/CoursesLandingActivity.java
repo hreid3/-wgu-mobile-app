@@ -87,7 +87,8 @@ public class CoursesLandingActivity extends BaseAndroidActivity  implements Adap
         int id = item.getItemId();
         switch (id) {
             case MENU_ITEM_ADD_COURSE:
-                startActivity(new Intent(this, CourseDetailActivity.class));
+                Intent intent = new Intent(this, CourseDetailActivity.class);
+                startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
         }
