@@ -131,6 +131,9 @@ public class AssessmentActivity extends BaseAndroidActivity {
                     if (true) {
 //                        Graduate graduate = getGraduate();
                         Course course = courseDao.getById(getIntent().getIntExtra(COURSE_ID, -1));
+                        if (course == null) {
+                            throw new Exception("Where is the course for " + getIntent().getIntExtra(COURSE_ID, -1));
+                        }
                         Assessment assessment = null;
                         TextView anIdFld = (TextView)viewGroup.findViewById(R.id.id_assessment);
                         if ( anIdFld != null && anIdFld.getText() != null && anIdFld.getText().toString().length() > 0) {
@@ -140,7 +143,7 @@ public class AssessmentActivity extends BaseAndroidActivity {
                         }
                         assessment.setDueDate(getDateFromTextView(dueDate));
                         if (notes.getText() != null && notes.getText().length() > 0) {
-                            course.setCourseNotes(notes.getText().toString());
+                            assessment.setNotes(notes.getText().toString());
                         }
 
                         assessment.setType((Assessment.TYPE)type.getSelectedItem());

@@ -221,21 +221,22 @@ public class CourseDetailActivity extends BaseAndroidActivity {
 
                             final ListView listView = (ListView) findViewById(R.id.term_assessments_list);
                             HeaderViewListAdapter hvla = (HeaderViewListAdapter) listView.getAdapter();
-                            ArrayAdapter<Assessment> la = (ArrayAdapter<Assessment>) hvla.getWrappedAdapter();
-                            for(int i=0; i < la.getCount(); i++) {
-                                Assessment assessment = (Assessment) la.getItem(i);
-                                assessment = assessmentDao.getById(assessment.getId()); // reattach
-                                assessment.setCourse(course);
-                                assessmentDao.createOrUpdate(assessment);
+                            if (hvla != null) {
+                                ArrayAdapter<Assessment> la = (ArrayAdapter<Assessment>) hvla.getWrappedAdapter();
+                                for (int i = 0; i < la.getCount(); i++) {
+                                    Assessment assessment = (Assessment) la.getItem(i);
+                                    assessment = assessmentDao.getById(assessment.getId()); // reattach
+                                    assessment.setCourse(course);
+                                    assessmentDao.createOrUpdate(assessment);
+                                }
                             }
-
-                            i(getLocalClassName(), "create or update for course success:  " + course.getTitle());
+                            i(getLocalClassName(), "create or update for course is a success:  " + course.getTitle());
                             saySomething("Course successfully saved.");
                             if(id == MENU_ITEM_SAVE_COURSE) {
                                 startActivity(new Intent(this, CoursesLandingActivity.class));
                             } else {
                                 Intent intent = new Intent(this, AssessmentActivity.class);
-                                intent.putExtra(COURSE_ID, getIntent().getIntExtra(COURSE_ID, -1));
+                                intent.putExtra(COURSE_ID, course.getId());
                                 startActivity(intent);
                             }
                         }
@@ -285,7 +286,8 @@ public class CourseDetailActivity extends BaseAndroidActivity {
 
     public void deleteAssessmentFromGrid(View v) {
         final ListView listView = (ListView) findViewById(R.id.term_assessments_list);
-        ArrayAdapter<Assessment> la = (ArrayAdapter<Assessment>)listView.getAdapter();
+        HeaderViewListAdapter hvla = (HeaderViewListAdapter) listView.getAdapter();
+        ArrayAdapter<Assessment> la = (ArrayAdapter<Assessment>) hvla.getWrappedAdapter();
 
         Object tag = v.getTag();
         if (tag != null) {
