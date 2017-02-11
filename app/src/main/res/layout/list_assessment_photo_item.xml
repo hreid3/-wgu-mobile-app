@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_assessment_list_item"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:descendantFocusability="blocksDescendants">
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:padding="25dp">
+
+        <ImageView
+            android:id="@+id/img_assessment_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toStartOf="@+id/btn_assessment_item_delete"
+            android:layout_weight="1"
+            android:clickable="false"
+            android:focusable="false"
+            android:gravity="left"
+            android:text="Due Date"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btn_assessment_photo_delete"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center_vertical"
+            android:onClick="deleteAssessmentPhotoFromGrid"
+            android:padding="3dip"
+
+            android:text="Delete"
+            android:textSize="10sp" />
+    </TableRow>
+</RelativeLayout>

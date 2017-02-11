@@ -129,7 +129,7 @@ public class CourseDetailActivity extends BaseAndroidActivity {
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             try {
                                 Intent intent = new Intent(CourseDetailActivity.this, AssessmentActivity.class);
-                                Assessment assessment = (new ArrayList<Assessment>(assessments)).get(position);
+                                Assessment assessment = (new ArrayList<Assessment>(assessments)).get(position-1);
                                 intent.putExtra(ASSESSMENT_ID, assessment.getId());
                                 intent.putExtra(COURSE_ID, getIntent().getIntExtra(COURSE_ID, -1));
                                 startActivity(intent);

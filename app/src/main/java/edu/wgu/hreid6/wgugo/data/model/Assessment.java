@@ -1,5 +1,8 @@
 package edu.wgu.hreid6.wgugo.data.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -47,7 +50,7 @@ public class Assessment {
     @DatabaseField(width = 4096, columnName = colNotes)
     private String notes;
 
-//    @DatabaseField(width = 4096, columnName = colPhotopaths)
+    @DatabaseField(width = 4096, columnName = colPhotopaths)
     private String photoPaths;
 
     @DatabaseField(columnName = colNotify)
@@ -56,6 +59,7 @@ public class Assessment {
     @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = colCourseId)
     private Course course;
 
+    private List<String> internalPhotosList;
     // TODO: How are we going to reference photos.
 
     public Assessment() {
@@ -111,17 +115,48 @@ public class Assessment {
     }
 
     public List<String> getFilePaths() {
-        // Need JSON
-        return null;
+        return getInternalList();
+    }
+
+    protected List<String> getInternalList() {
+        if (internalPhotosList == null) {
+            if (photoPaths != null && photoPaths.length() > 0) {
+                // Json structure
+                Gson gson = new GsonBuilder().create();
+                internalPhotosList = gson.fromJson(photoPaths, new TypeToken<ArrayList<String>>() {}.getType());
+            } else {
+                // new List
+                internalPhotosList = new ArrayList<>();
+            }
+        }
+        return internalPhotosList;
+    }
+
+    public void clearPaths() {
+        if (this.internalPhotosList != null) {
+            this.internalPhotosList.clear();
+        }
+        this.photoPaths = "[]";
     }
 
     public void addFilePath(String path) {
-        List<String> paths = getFilePaths();
-        if (path == null) {
-            paths = new ArrayList<>();
+        getFilePaths().add(path);
+        saveInternalList();
+    }
+
+    public boolean removeFilePath(String path){
+        boolean stat = getFilePaths().remove(path);
+        if (stat) {
+            saveInternalList();
         }
-        paths.add(path);
-        // Need JSON
+        return stat;
+    }
+
+    protected void saveInternalList() {
+        if (getInternalList() != null) {
+            Gson gson = new GsonBuilder().create();
+            this.photoPaths = gson.toJson(getInternalList(), new TypeToken<ArrayList<String>>() {}.getType());
+        }
     }
 
     @Override
