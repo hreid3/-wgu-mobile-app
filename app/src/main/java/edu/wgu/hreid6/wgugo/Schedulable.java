@@ -1,9 +1,5 @@
 package edu.wgu.hreid6.wgugo;
 
-import android.provider.CalendarContract;
-
-import java.util.Map;
-
 import edu.wgu.hreid6.wgugo.data.model.WguEvent;
 
 /**

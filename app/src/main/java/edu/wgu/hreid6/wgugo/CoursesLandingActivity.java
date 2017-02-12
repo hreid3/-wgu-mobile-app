@@ -4,24 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import static android.util.Log.*;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import edu.wgu.hreid6.wgugo.adapter.CoursesListAdapter;
 import edu.wgu.hreid6.wgugo.data.model.Course;
 import edu.wgu.hreid6.wgugo.data.model.Graduate;
+
+import static android.util.Log.e;
+import static android.util.Log.i;
 
 public class CoursesLandingActivity extends BaseAndroidActivity  implements AdapterView.OnItemClickListener  {
 
@@ -86,9 +86,6 @@ public class CoursesLandingActivity extends BaseAndroidActivity  implements Adap
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch (id) {
             case MENU_ITEM_ADD_COURSE:

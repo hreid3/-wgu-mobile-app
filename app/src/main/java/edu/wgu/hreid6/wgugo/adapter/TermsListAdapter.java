@@ -12,7 +12,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import edu.wgu.hreid6.wgugo.R;
-import edu.wgu.hreid6.wgugo.data.model.Course;
 import edu.wgu.hreid6.wgugo.data.model.Term;
 
 /**

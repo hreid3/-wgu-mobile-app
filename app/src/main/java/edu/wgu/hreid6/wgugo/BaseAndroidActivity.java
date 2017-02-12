@@ -16,13 +16,8 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import static android.util.Log.*;
-import static edu.wgu.hreid6.wgugo.FormHelper.getDisplayDate;
-
 import java.sql.SQLException;
 import java.util.Calendar;
-
-import javax.inject.Inject;
 
 import edu.wgu.hreid6.wgugo.data.dao.AssessmentDao;
 import edu.wgu.hreid6.wgugo.data.dao.CourseDao;
@@ -31,6 +26,8 @@ import edu.wgu.hreid6.wgugo.data.dao.TermDao;
 import edu.wgu.hreid6.wgugo.data.dao.WguEventDao;
 import edu.wgu.hreid6.wgugo.data.model.Graduate;
 import edu.wgu.hreid6.wgugo.data.model.WguEvent;
+
+import static edu.wgu.hreid6.wgugo.FormHelper.getDisplayDate;
 
 /**
  * Created by hreid on 2/3/17.
@@ -140,9 +137,6 @@ abstract class BaseAndroidActivity extends AppCompatActivity implements DatePick
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         switch (id) {

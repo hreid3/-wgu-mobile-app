@@ -1,15 +1,9 @@
 package edu.wgu.hreid6.wgugo;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,33 +12,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import static edu.wgu.hreid6.wgugo.FormHelper.*;
-import static android.util.Log.*;
 
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import edu.wgu.hreid6.wgugo.adapter.AssessmentListAdapter;
-import edu.wgu.hreid6.wgugo.adapter.CoursesListAdapter;
 import edu.wgu.hreid6.wgugo.data.model.Assessment;
 import edu.wgu.hreid6.wgugo.data.model.Course;
 import edu.wgu.hreid6.wgugo.data.model.Graduate;
 import edu.wgu.hreid6.wgugo.data.model.WguEvent;
+
+import static android.util.Log.e;
+import static android.util.Log.i;
+import static edu.wgu.hreid6.wgugo.FormHelper.generateKey;
+import static edu.wgu.hreid6.wgugo.FormHelper.getDateFromTextView;
+import static edu.wgu.hreid6.wgugo.FormHelper.getDisplayDate;
+import static edu.wgu.hreid6.wgugo.FormHelper.isEmailValid;
+import static edu.wgu.hreid6.wgugo.FormHelper.isEmpty;
+import static edu.wgu.hreid6.wgugo.FormHelper.setListViewHeightBasedOnChildren;
 
 public class CourseDetailActivity extends BaseAndroidActivity implements Schedulable, Sharable {
 
@@ -159,9 +152,6 @@ public class CourseDetailActivity extends BaseAndroidActivity implements Schedul
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         TextView anIdFld = (TextView)viewGroup.findViewById(R.id.id_course);
         switch (id) {

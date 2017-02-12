@@ -8,10 +8,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
 
-import javax.inject.Inject;
-
 import edu.wgu.hreid6.wgugo.data.PersistenceHelper;
-import edu.wgu.hreid6.wgugo.data.model.Term;
 
 /**
  * Created by hreid on 2/3/17.

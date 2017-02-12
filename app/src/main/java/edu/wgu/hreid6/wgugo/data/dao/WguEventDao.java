@@ -6,12 +6,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.CalendarContract;
-import static android.provider.CalendarContract.*;
-import java.util.Calendar;
 
 import edu.wgu.hreid6.wgugo.Notifier;
-import edu.wgu.hreid6.wgugo.R;
 import edu.wgu.hreid6.wgugo.data.model.WguEvent;
+
+import static android.provider.CalendarContract.Events;
+import static android.provider.CalendarContract.Reminders;
 
 /**
  * Created by hreid on 2/11/17.

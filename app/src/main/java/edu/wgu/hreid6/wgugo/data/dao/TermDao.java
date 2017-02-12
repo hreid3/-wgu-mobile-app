@@ -6,16 +6,11 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import edu.wgu.hreid6.wgugo.data.PersistenceHelper;
 import edu.wgu.hreid6.wgugo.data.model.Term;
-import static edu.wgu.hreid6.wgugo.data.model.Term.*;
+
+import static edu.wgu.hreid6.wgugo.data.model.Term.colId;
 
 /**
  * Created by hreid on 2/3/17.

@@ -3,12 +3,9 @@ package edu.wgu.hreid6.wgugo.data.dao;
 import android.app.Activity;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
-import java.util.List;
 
-import edu.wgu.hreid6.wgugo.data.model.Course;
 import edu.wgu.hreid6.wgugo.data.model.Graduate;
 
 import static edu.wgu.hreid6.wgugo.data.model.Term.colId;

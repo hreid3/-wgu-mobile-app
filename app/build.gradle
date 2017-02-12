@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'wgu-go'
+            keyPassword 'wguhreid6'
+            storeFile file('/Users/hreid/Dropbox/FAMILY/Horace-WGU/mobleapp/keystore/wgu-go.jks')
+            storePassword 'wguhreid6'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
@@ -15,6 +23,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 }

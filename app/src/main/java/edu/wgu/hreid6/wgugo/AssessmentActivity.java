@@ -1,13 +1,10 @@
 package edu.wgu.hreid6.wgugo;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
@@ -18,8 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,11 +28,9 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
-import edu.wgu.hreid6.wgugo.adapter.AssessmentListAdapter;
 import edu.wgu.hreid6.wgugo.adapter.AssessmentPhotoListAdapter;
 import edu.wgu.hreid6.wgugo.data.model.Assessment;
 import edu.wgu.hreid6.wgugo.data.model.Course;
-import edu.wgu.hreid6.wgugo.data.model.Graduate;
 import edu.wgu.hreid6.wgugo.data.model.WguEvent;
 
 import static android.util.Log.e;

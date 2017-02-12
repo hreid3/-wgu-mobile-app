@@ -10,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import static android.util.Log.*;
-
 import edu.wgu.hreid6.wgugo.data.model.Graduate;
 
-import static edu.wgu.hreid6.wgugo.FormHelper.*;
+import static android.util.Log.e;
+import static android.util.Log.i;
+import static android.util.Log.v;
+import static edu.wgu.hreid6.wgugo.FormHelper.isEmailValid;
+import static edu.wgu.hreid6.wgugo.FormHelper.isEmpty;
 
 public class GraduateFormActivity extends BaseAndroidActivity {
 
@@ -54,9 +56,6 @@ public class GraduateFormActivity extends BaseAndroidActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch (id) {
             case MENU_ITEM_SAVE_PROFILE:

@@ -9,9 +9,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Singleton;
-
-import edu.wgu.hreid6.wgugo.data.model.Assessment;
 import edu.wgu.hreid6.wgugo.data.model.Course;
 
 import static edu.wgu.hreid6.wgugo.data.model.Course.colId;
