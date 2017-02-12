@@ -26,6 +26,15 @@ android {
             signingConfig signingConfigs.config
         }
     }
+    productFlavors {
+        rubric {
+            minSdkVersion 23
+            applicationId 'wguhreid6'
+            signingConfig signingConfigs.config
+            targetSdkVersion 23
+            versionName 'Shinny Flake'
+        }
+    }
 }
 
 dependencies {
