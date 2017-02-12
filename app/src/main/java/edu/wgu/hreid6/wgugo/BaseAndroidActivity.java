@@ -28,14 +28,15 @@ import edu.wgu.hreid6.wgugo.data.dao.AssessmentDao;
 import edu.wgu.hreid6.wgugo.data.dao.CourseDao;
 import edu.wgu.hreid6.wgugo.data.dao.GraduateDao;
 import edu.wgu.hreid6.wgugo.data.dao.TermDao;
+import edu.wgu.hreid6.wgugo.data.dao.WguEventDao;
 import edu.wgu.hreid6.wgugo.data.model.Graduate;
+import edu.wgu.hreid6.wgugo.data.model.WguEvent;
 
 /**
  * Created by hreid on 2/3/17.
  */
 
 abstract class BaseAndroidActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    protected static final int MENU_ITEM_ABOUT = 0x1001;
     protected static final int MENU_ITEM_LOGOUT = 0x1020;
     protected static final int MENU_ITEM_PROFILE = 0x1005;
 
@@ -51,13 +52,18 @@ abstract class BaseAndroidActivity extends AppCompatActivity implements DatePick
     protected static final int MENU_ITEM_SAVE_ASSESSMENT = 0x5000;
     protected static final int MENU_ITEM_ASSESSMENT = 0x5010;
 
+    protected static final int MENU_ITEM_HOME = 0x0199;
+    protected static final int MENU_ITEM_SCHEDULE = 0x6000;
+
+    protected static final int MENU_ITEM_SHARE = 0x7000;
+
     public static final String COURSE_ID = "courseId";
     public static final String TERM_ID = "termId";
     public static final String ASSESSMENT_ID = "assessmentId";
 
     protected int openedDateDialogId; // shucks we have to keep more state.
 
-    CourseDao courseDao; // I do not like each instance getting a copy of an dio
+    CourseDao courseDao; // I do not like each instance getting a copy of an dao
 
     TermDao termDao; // I do not like this
 
@@ -97,10 +103,39 @@ abstract class BaseAndroidActivity extends AppCompatActivity implements DatePick
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        menu.add(0, MENU_ITEM_ABOUT, 300, R.string.title_activity_about);
-        menu.add(0, MENU_ITEM_PROFILE, 300, R.string.profile);
-        menu.add(0, MENU_ITEM_LOGOUT, 400, R.string.logout);
+        menu.add(0, MENU_ITEM_HOME, 1, "Home");
+        menu.add(1, MENU_ITEM_PROFILE, 300, R.string.profile);
+        menu.add(2, MENU_ITEM_LOGOUT, 9999, R.string.logout);
+        if (this instanceof Schedulable && ((Schedulable)this).isScheduleable()) {
+            menu.add(3, MENU_ITEM_SCHEDULE, 500, "Schedule Notifications");
+        }
+        if (this instanceof Sharable && ((Sharable)this).isScheduleable()) {
+            menu.add(3, MENU_ITEM_SHARE, 600, "Send Notes");
+        }
         return true;
+    }
+
+    protected void addEvent() {
+        if (this instanceof Schedulable) {
+            WguEventDao wguEventDao = new WguEventDao();
+            wguEventDao.addEvent(this, ((Schedulable) this).getWguEvent());
+        }
+    }
+
+    protected void share() {
+        if (this instanceof Sharable) {
+            WguEvent wguEvent = ((Sharable)this).getWguEvent();
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("message/rfc822");
+            i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"recipient@example.com"});
+            i.putExtra(Intent.EXTRA_SUBJECT, "Sharing notes for " + wguEvent.getTitle());
+            i.putExtra(Intent.EXTRA_TEXT   , wguEvent.getNotes());
+            try {
+                startActivity(Intent.createChooser(i, "Send mail..."));
+            } catch (android.content.ActivityNotFoundException ex) {
+                Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
@@ -111,14 +146,22 @@ abstract class BaseAndroidActivity extends AppCompatActivity implements DatePick
         int id = item.getItemId();
 
         switch (id) {
-            case MENU_ITEM_ABOUT:
-                startActivity(new Intent(this, AboutActivity.class));
+            case MENU_ITEM_HOME:
+                startActivity(new Intent(this, MainActivity.class));
                 return true;
             case MENU_ITEM_PROFILE:
                 startActivity(new Intent(this, GraduateFormActivity.class));
                 return true;
             case MENU_ITEM_LOGOUT:
                 Snackbar.make(getViewGroup(), "You are logged out, bye.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                System.exit(0);
+                return true;
+            case MENU_ITEM_SCHEDULE:
+                addEvent();
+                return true;
+            case MENU_ITEM_SHARE:
+                share();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

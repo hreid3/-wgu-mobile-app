@@ -30,8 +30,8 @@ public class CoursesLandingActivity extends BaseAndroidActivity  implements Adap
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        this.viewGroup = (ViewGroup) findViewById(R.id.layout_courses_landing);
         setContentView(R.layout.activity_courses_landing);
+        this.viewGroup = (ViewGroup) findViewById(R.id.layout_courses_landing);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Graduate graduate = null;
@@ -43,14 +43,19 @@ public class CoursesLandingActivity extends BaseAndroidActivity  implements Adap
         }
         if (graduate != null) {
             Collection<Course> courses = graduate.getCourses();
-            if (courses != null) {
+            if (courses != null && courses.size() > 0) {
                 CoursesListAdapter coursesListAdapter = new CoursesListAdapter(this, R.layout.list_course_item, new ArrayList<Course>(courses), R.layout.list_course_item);
                 ListView listView = (ListView) findViewById(R.id.courses_list_view);
                 listView.setAdapter(coursesListAdapter);
                 listView.setOnItemClickListener(this);
+            } else {
+                findViewById(R.id.no_rows).setVisibility(View.VISIBLE);
             }
+        } else {
+            findViewById(R.id.no_rows).setVisibility(View.VISIBLE);
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        viewGroup.invalidate();
     }
 
     @Override

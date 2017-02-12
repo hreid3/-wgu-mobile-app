@@ -47,6 +47,9 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">5dp</item>
         <item name="android:orientation">vertical</item>
+        <item name="android:background">#efefef</item>
+        <item name="android:padding">10dp</item>
+
     </style>
 
     <style name="fldGroup.error" parent="fldGroup">

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff"
     android:fitsSystemWindows="true"
     tools:context="edu.wgu.hreid6.wgugo.AssessmentActivity">
 
@@ -20,5 +21,6 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
+
     <include layout="@layout/content_assessment" />
 </android.support.design.widget.CoordinatorLayout>

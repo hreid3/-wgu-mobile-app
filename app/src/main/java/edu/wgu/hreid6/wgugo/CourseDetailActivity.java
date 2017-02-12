@@ -37,14 +37,16 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import edu.wgu.hreid6.wgugo.adapter.AssessmentListAdapter;
 import edu.wgu.hreid6.wgugo.adapter.CoursesListAdapter;
 import edu.wgu.hreid6.wgugo.data.model.Assessment;
 import edu.wgu.hreid6.wgugo.data.model.Course;
 import edu.wgu.hreid6.wgugo.data.model.Graduate;
+import edu.wgu.hreid6.wgugo.data.model.WguEvent;
 
-public class CourseDetailActivity extends BaseAndroidActivity {
+public class CourseDetailActivity extends BaseAndroidActivity implements Schedulable, Sharable {
 
     private ViewGroup viewGroup;
 
@@ -301,4 +303,38 @@ public class CourseDetailActivity extends BaseAndroidActivity {
         }
     }
 
+    public boolean isScheduleable() {
+        return (getIntent().getIntExtra(COURSE_ID, -1) > -1); // Only saved courses are schedulable
+    }
+
+    @Override
+    public WguEvent getWguEvent() {
+        try {
+            WguEvent event = new WguEvent();
+            EditText title = (EditText) viewGroup.findViewById(R.id.fld_course_title);
+            event.setTitle(title.getText().toString());
+
+            TextView startDate = (TextView) viewGroup.findViewById(R.id.ro_start_date);
+            event.setStartTime(getDateFromTextView(startDate).getTime());
+
+            TextView endDate = (TextView) viewGroup.findViewById(R.id.ro_end_date);
+            event.setEndTime(getDateFromTextView(endDate).getTime());
+
+            event.setKey(generateKey(this, getIntent().getIntExtra(COURSE_ID, -1) > -1));
+            event.setEventDescription("WGU Go Course Event to remind student that course is starting");
+
+            event.setNotes(((TextView)viewGroup.findViewById(R.id.fld_notes)).getText().toString());
+            return event;
+        } catch (Exception ex) {
+            String message = "Could not add an event";
+            e(getLocalClassName(), message, ex);
+            saySomething(message);
+        }
+        return null;
+    }
+
+    @Override
+    public String getEventKey() {
+        return null;
+    }
 }

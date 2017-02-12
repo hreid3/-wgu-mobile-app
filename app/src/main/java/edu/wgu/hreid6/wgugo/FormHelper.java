@@ -1,5 +1,6 @@
 package edu.wgu.hreid6.wgugo;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -7,10 +8,12 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.security.MessageDigest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -104,6 +107,11 @@ public class FormHelper {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
+    }
+
+    public static String generateKey(Context context, Object salt) throws Exception {
+        byte[] bytesOfMessage = new StringBuilder().append(context.getClass().getCanonicalName()).append(salt).toString().getBytes();
+        return new String(MessageDigest.getInstance("MD5").digest(bytesOfMessage));
     }
 }
 

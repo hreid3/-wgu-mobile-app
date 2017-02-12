@@ -38,20 +38,24 @@ import edu.wgu.hreid6.wgugo.adapter.AssessmentPhotoListAdapter;
 import edu.wgu.hreid6.wgugo.data.model.Assessment;
 import edu.wgu.hreid6.wgugo.data.model.Course;
 import edu.wgu.hreid6.wgugo.data.model.Graduate;
+import edu.wgu.hreid6.wgugo.data.model.WguEvent;
 
 import static android.util.Log.e;
 import static android.util.Log.i;
+import static edu.wgu.hreid6.wgugo.FormHelper.generateKey;
 import static edu.wgu.hreid6.wgugo.FormHelper.getDateFromTextView;
 import static edu.wgu.hreid6.wgugo.FormHelper.getDisplayDate;
 import static edu.wgu.hreid6.wgugo.FormHelper.setListViewHeightBasedOnChildren;
 
-public class AssessmentActivity extends BaseAndroidActivity {
+public class AssessmentActivity extends BaseAndroidActivity implements Schedulable, Sharable {
 
     // This activity will keep more internal state, an antipattern these days for UI development in the functional programming world.
     // Maybe I should tried using scala.
     private ViewGroup viewGroup;
     private Assessment assessment;
     private String photoURI;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_TAKE_PHOTO = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +68,6 @@ public class AssessmentActivity extends BaseAndroidActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Spinner statuses = (Spinner) findViewById(R.id.fld_assessment_type);
@@ -217,8 +220,6 @@ public class AssessmentActivity extends BaseAndroidActivity {
         }
     }
 
-        static final int REQUEST_IMAGE_CAPTURE = 1;
-    static final int REQUEST_TAKE_PHOTO = 1;
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -285,32 +286,47 @@ public class AssessmentActivity extends BaseAndroidActivity {
             setListViewHeightBasedOnChildren(listView);
         }
     }
-//
-//    private void setPic(ImageView v, String path) {
-//        // Get the dimensions of the View
-//        int targetW = v.getWidth();
-//        int targetH = v.getHeight();
-//
-//        // Get the dimensions of the bitmap
-//        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-//        bmOptions.inJustDecodeBounds = true;
-//        BitmapFactory.decodeFile(path, bmOptions);
-//        int photoW = bmOptions.outWidth;
-//        int photoH = bmOptions.outHeight;
-//
-//        // Determine how much to scale down the image
-//        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-//
-//        // Decode the image file into a Bitmap sized to fill the View
-//        bmOptions.inJustDecodeBounds = false;
-//        bmOptions.inSampleSize = scaleFactor;
-//        bmOptions.inPurgeable = true;
-//
-//        Bitmap bitmap = BitmapFactory.decodeFile(path, bmOptions);
-//        v.setImageBitmap(bitmap);
-//    }
+
     @Override
     protected ViewGroup getViewGroup() {
         return viewGroup;
+    }
+
+    public boolean isScheduleable() {
+        return (getIntent().getIntExtra(ASSESSMENT_ID, -1) > -1); // Only saved courses are schedulable
+    }
+
+    @Override
+    public WguEvent getWguEvent() {
+        try {
+            WguEvent event = new WguEvent();
+            Spinner type = (Spinner) viewGroup.findViewById(R.id.fld_assessment_type);
+            String title = ((Assessment.TYPE) type.getSelectedItem()).toString() + " Assessment";
+            event.setTitle(title);
+
+            TextView dueDate = (TextView) viewGroup.findViewById(R.id.ro_due_date);
+            event.setStartTime(getDateFromTextView(dueDate).getTime());
+            event.setEndTime(getDateFromTextView(dueDate).getTime());
+
+            event.setKey(generateKey(this, getIntent().getIntExtra(ASSESSMENT_ID, -1) > -1));
+            event.setEventDescription(title + " Event to remind student is due.");
+            event.setNotes(((TextView)viewGroup.findViewById(R.id.fld_notes)).getText().toString());
+            return event;
+        } catch (Exception ex) {
+            String message = "Could not add an event";
+            e(getLocalClassName(), message, ex);
+            saySomething(message);
+        }
+        return null;
+    }
+
+    @Override
+    public String getEventKey() {
+        try {
+            return generateKey(this, getIntent().getIntExtra(ASSESSMENT_ID, -1) > -1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

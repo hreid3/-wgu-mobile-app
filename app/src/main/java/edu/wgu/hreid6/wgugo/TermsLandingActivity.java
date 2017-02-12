@@ -47,14 +47,19 @@ public class TermsLandingActivity  extends BaseAndroidActivity  implements Adapt
         }
         if (graduate != null) {
             Collection<Term> terms = graduate.getTerms();
-            if (terms != null) {
+            if (terms != null && terms.size() > 0) {
                 TermsListAdapter termsListAdapter = new TermsListAdapter(this, R.layout.list_term_item, new ArrayList<Term>(terms));
                 ListView listView = (ListView) findViewById(R.id.terms_list_view);
                 listView.setAdapter(termsListAdapter);
                 listView.setOnItemClickListener(this);
+            } else {
+                findViewById(R.id.no_rows).setVisibility(View.VISIBLE);
             }
+        } else {
+            findViewById(R.id.no_rows).setVisibility(View.VISIBLE);
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.viewGroup.invalidate();
     }
 
     @Override

@@ -110,7 +110,8 @@
                     android:gravity="top|left"
                     android:inputType="textMultiLine"
                     android:lines="4"
-                    android:maxLines="4" />
+                    android:maxLines="4"
+                    android:background="#f9f9f9"/>
 
                 <TextView
                     android:id="@+id/fld_msg_notes"

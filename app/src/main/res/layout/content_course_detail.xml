@@ -36,7 +36,8 @@
             android:orientation="vertical">
             <LinearLayout
                 android:id="@+id/fld_group_course_title"
-                style="@style/fldGroup">
+                style="@style/fldGroup"
+                >
 
                 <TextView
                     android:id="@+id/lbl_course_title"
@@ -105,10 +106,10 @@
 
                 <LinearLayout
                     android:id="@+id/fld_group_end_date"
-                    style="@style/fldGroup"
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    >
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/lbl_end_date"
@@ -242,6 +243,7 @@
                     android:lines="4"
                     android:maxLines="4"
                     android:gravity="top|left"
+                    android:background="#f9f9f9"
                     />
 
                 <TextView

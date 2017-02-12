@@ -1,6 +1,7 @@
 package edu.wgu.hreid6.wgugo;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -13,7 +14,9 @@ import android.view.Menu;
 import android.view.ViewGroup;
 
 import java.sql.SQLException;
+import java.util.List;
 
+import edu.wgu.hreid6.wgugo.data.model.Course;
 import edu.wgu.hreid6.wgugo.data.model.Graduate;
 
 public class MainActivity extends BaseAndroidActivity {
@@ -38,6 +41,24 @@ public class MainActivity extends BaseAndroidActivity {
                 startActivity(new Intent(this, GraduateFormActivity.class));
             } else {
                 // put in summary details.
+                List<Course> allCourses = this.courseDao.getAllCourses();
+                List<Course> pendingCourses = this.courseDao.getActiveCourses();
+                int uncompletedCourses = allCourses.size() - pendingCourses.size();
+                if (allCourses.size() > 0 ) {
+                    this.mainLayout.invalidate();
+                    findViewById(R.id.no_rows).setVisibility(View.GONE);
+                    findViewById(R.id.static_progress_course).setVisibility(View.VISIBLE);
+                    Resources res = getResources();
+
+                    CustomProgress customProgressRoundedRectangle = (CustomProgress) findViewById(R.id.static_progress_course);
+                    customProgressRoundedRectangle.setMaximumPercentage((float)uncompletedCourses / (float)allCourses.size());
+                    customProgressRoundedRectangle.useRoundedRectangleShape(30.0f);
+                    customProgressRoundedRectangle.setProgressColor(res.getColor(R.color.purple_500));
+                    customProgressRoundedRectangle.setProgressBackgroundColor(res.getColor(R.color.purple_200));
+                    customProgressRoundedRectangle.setShowingPercentage(true);
+                    customProgressRoundedRectangle.setTextToShow(uncompletedCourses + " out of " + allCourses.size() + " Completed");
+                    customProgressRoundedRectangle.setSpeed(10);
+                }
             }
         } catch (SQLException e) {
             e(getClass().getName(), "Error fetching graduate", e);

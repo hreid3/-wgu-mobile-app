@@ -26,6 +26,13 @@
         style="@style/fldGroup"
         android:layout_below="@+id/profile_header">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="You do not have any courses.  Please add course from toolbar above."
+            android:id="@+id/no_rows"
+            android:visibility="gone"/>
+
         <ListView
             android:id="@+id/courses_list_view"
             android:layout_width="match_parent"

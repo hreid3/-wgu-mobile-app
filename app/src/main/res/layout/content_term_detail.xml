@@ -13,7 +13,8 @@
     tools:context="edu.wgu.hreid6.wgugo.TermDetailActivity"
     tools:showIn="@layout/activity_term_detail"
     android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    >
 
     <TextView
         android:id="@+id/profile_header"
@@ -104,9 +105,10 @@
 
                 <LinearLayout
                     android:id="@+id/fld_group_end_date"
-                    style="@style/fldGroup"
                     android:layout_width="0dp"
-                    android:layout_weight="0.5">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/lbl_end_date"
